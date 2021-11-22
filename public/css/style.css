@@ -1,0 +1,366 @@
+@charset "UTF-8";
+.paging a{
+	padding-right: 10px;
+	padding-top: 10px;
+}
+
+/*-------------------login------------------------*/
+.logpic{
+	width: 50%;
+	height: 500px;
+	background-color: orange;
+}
+.loginall{
+	display: flex;
+}
+.login_body{
+	border: 1px solid;
+	border-radius:20px;
+	text-align: center;
+	margin: auto;
+	background-color: #BBBBBB;
+}
+.login_body p{
+	text-align: center;
+	padding-top:30px;
+}
+.login_body input{
+	padding: 5px 20px 5px 20px;/*inputサイズ*/
+	margin-top: 10px;
+	border-radius: 15px;
+}
+.login_button a{
+	margin-right: 10px;
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #00AA00;
+	color: white;
+}
+.signup_button a{
+	margin-left: 10px;
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #FF6928;
+	color: white;
+}
+.pass{
+	padding-top    : 30px;
+	padding-bottom : 20px;
+}
+
+/*-------------------初期設定------------------------*/
+body, p{
+	margin          : 0;
+	padding         : 0;
+	border          : none;
+	font-style      : normal;
+	font-weight     : normal;
+	font-size       : 100%;
+	text-align      : left;
+	list-style-type : none;
+	border-collapse : collapse;
+	font-family     : "arial black";/*書式指定*/
+}
+h1{
+	margin: 0;
+}
+a{
+	text-decoration: none;/*アンダーライン消す*/
+}
+textarea{
+	min-width  : 300px;
+	min-height : 200px;
+	max-width  : 300px;
+	max-height : 200px;
+	margin-top : 30px;
+}
+select{
+	font-size : 16px;
+	border    : 1px;
+	width     : 180px;
+}
+ul{
+	list-style-type : none;/*点を削除*/
+	margin          : 0;
+}
+table{
+	border-collapse : collapse;
+	margin          : 0 auto;
+	margin-top      : 50px;
+	margin-bottom   : 50px;
+	border-radius : 10px;
+}
+table tr{
+	padding:20px;
+}
+table td{
+	border  : 1px solid #333;
+	padding:10px;
+}
+table th{
+	border  : 1px solid #333;
+	text-align: center;
+	padding:10px;
+}
+/*-------------------user_list------------------------*/
+
+/*-------------------権限によって表示を分ける------------------------*/
+.none{
+	display: none;
+}
+/*-------------------login_now------------------------*/
+/*.login_now{
+	background-color: #DDDDDD;
+	text-align: center;
+}
+*/
+
+/*-------------------共通------------------------*/
+.body{
+	margin: 0 auto;/*真ん中*/
+	padding-top: 100px;
+	padding-bottom: 100px;
+	width: 60%;
+}
+.upbody{
+	border-top: 1px solid;
+	border-right: 1px solid;
+	border-left: 1px solid;
+	border-radius: 10px 10px 0px 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+	margin-right: 20%;
+	margin-left: 20%;
+	background-color: #DDDDDD;
+}
+.downbody{
+	border-top: 1px solid;
+	border-right: 1px solid;
+	border-left: 1px solid;
+	border-bottom: 1px solid;
+	border-radius: 0px 0px 10px 10px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+	margin-right: 20%;
+	margin-left: 20%;
+	background-color: #DDDDDD;
+}
+.downbody h2{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.downbody p{
+	text-align: center;
+	padding-bottom: 20px;
+}
+.downbody input{
+	padding: 5px 20px 5px 20px;/*inputサイズ*/
+	margin-top: 10px;
+	border-radius: 15px;
+}
+.button{
+	padding: 20px 50px 50px 50px;
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+.button a{
+	font-family: "arial black";/*書式変更*/
+}
+.back_button{
+	padding: 10px 20px 10px 20px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #66FF66;
+	color: white;
+	margin-right: 10px;
+}
+.next_button input{
+	padding: 10px 20px 10px 20px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #41e0e0;
+	color: white;
+	margin-left: 10px;
+}
+/*-------------------button------------------------*/
+.log_button a{
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #00AA00;
+	border-color: #00AA00;
+	color: white;
+}
+.signup_button a{
+	padding          : 10px;
+	border           : 1px solid;
+	border-radius    : 10px;
+	background-color : #FF6928;
+	border-color     : #FF6928;
+	color            : white;
+	margin-bottom    : 30px;
+}
+
+.submit{
+	padding          : 20px;
+	border           : 1px solid;
+	border-radius    : 10px;
+	background-color : #41e0e0;
+	border-color     : #41e0e0;
+	color            : white;
+	/* margin-bottom    : 30px; */
+	text-align: center;
+}
+
+/*-------------------footer------------------------*/
+.footer{
+	background-color: black;
+	width: 100%;
+	height: 200px;
+}
+.footer p{
+	color: white;
+}
+
+/*-------------------header------------------------*/
+.header{
+	background-color: black;
+	padding: 30px;
+	font-size: 20px;
+	display: flex;
+  	justify-content: space-between;
+}
+.header a{
+	color: white;
+}
+
+/*-------------------login------------------------*/
+.logpic{
+	width: 50%;
+	height: 500px;
+	background-color: orange;
+}
+.loginall{
+	display: flex;
+}
+.login_body{
+	border: 1px solid;
+	border-radius:20px;
+	text-align: center;
+	margin: auto;
+	background-color: #BBBBBB;
+}
+.login_body p{
+	text-align: center;
+	padding-top:30px;
+}
+.login_body input{
+	padding: 5px 20px 5px 20px;/*inputサイズ*/
+	margin-top: 10px;
+	border-radius: 15px;
+}
+.login_button a{
+	margin-right: 10px;
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #00AA00;
+	color: white;
+}
+.signup_button a{
+	margin-left: 10px;
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #FF6928;
+	color: white;
+}
+.pass{
+	padding-top    : 30px;
+	padding-bottom : 20px;
+}
+/*-------------------signup------------------------*/
+.signup_comp_button {
+	margin-top: 40px;
+	margin-bottom:30px;
+}
+.signup_comp_button input{
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #FF6928;
+	color: white;
+}
+/*-------------------mypage_edit------------------------*/
+.aicon_pic{
+	width: 150px;
+	height: 150px;
+	background-color: #41e0e0;
+}
+/*-------------------goods------------------------*/
+.view_list{
+	display: flex;
+}
+/*-------------------post------------------------*/
+
+/*-------------------main------------------------*/
+/*.main{
+	margin-top: 30px;
+	text-align: center;
+}*/
+.my_title{
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+/*-------------------mypage------------------------*/
+.prof{
+	display: flex;
+	justify-content: center;
+}
+/*-------------------brand------------------------*/
+
+.insert table{
+	border-color  : black;
+	/* background-color : black; */
+}
+.insert table th{
+	padding : 10px;
+}
+.insert input{
+	border-radius : 10px;
+	border-color  : black;
+	border-width  : thin;
+	font-size     : 15px;
+}
+.insert input[type="text"]{
+	width  : 150px;
+	height :  30px;
+}
+.insert input[type="submit"]{
+	color            : white;
+	background-color : black;
+	width            : 50px;
+	height           : 35px;
+}
+.list input{
+	border-radius : 10px;
+	border-color  : black;
+	border-width  : thin;
+	font-size     : 15px;
+}
+.list input[type="submit"]{
+	color            : white;
+	background-color : black;
+	width            : 50px;
+	height           : 35px;
+}
+.error p{
+	color      : red;
+	text-align : center;
+}
