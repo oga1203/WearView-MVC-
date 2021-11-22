@@ -60,4 +60,17 @@ class User extends Db
 		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
 		$sth->execute();
 	}
+
+	/**
+	 * パスワード変更
+	 * 
+	 */
+	public function updatePassword($arr = ['email' => "", 'password' => ""])
+	{
+		$sql = 'UPDATE ' . $this->table . ' SET password = :password WHERE email = :email';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
+		$sth->bindParam(':password', $arr['password'], PDO::PARAM_STR);
+		$sth->execute();
+	}
 }

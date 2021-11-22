@@ -49,4 +49,13 @@ class UserController
         ];
         $this->User->updateManager($update);
     }
+
+    public function updatePassword()
+    {
+        $update = [
+            'email'    => $this->request['post']['email'],
+            'password' => $this->request['post']['password']
+        ];
+        $this->User->updatePassword($update);
+    }
 }
