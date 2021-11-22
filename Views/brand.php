@@ -3,7 +3,7 @@ require_once(ROOT_PATH . 'Controllers/BrandController.php');
 $brands = new BrandController();
 $params = $brands->index();
 $error = '';
-//ブランド追加
+//追加
 if (isset($_POST['brand_name'])) {
   //改善の余地あり？
   foreach ($params['brand'] as $brand) {
@@ -13,7 +13,7 @@ if (isset($_POST['brand_name'])) {
     }
   }
   //$errorがnullならば登録されていないので追加
-  if ($error == null) {
+  if (empty($error)) {
     $insert = $brands->insert();
     //ページのリフレッシュ
     header("Refresh:1");

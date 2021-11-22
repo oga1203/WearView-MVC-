@@ -3,7 +3,7 @@ require_once(ROOT_PATH . 'Controllers/CategoryController.php');
 $categories = new CategoryController();
 $params = $categories->index();
 $error = '';
-//ブランド追加
+//追加
 if (isset($_POST['category_name'])) {
 	//改善の余地あり？
 	foreach ($params['category'] as $category) {
@@ -13,7 +13,7 @@ if (isset($_POST['category_name'])) {
 		}
 	}
 	//$errorがnullならば登録されていないので追加
-	if ($error == null) {
+	if (empty($error)) {
 		$insert = $categories->insert();
 		//ページのリフレッシュ
 		header("Refresh:1");
@@ -67,7 +67,6 @@ if (isset($_POST['category_id'])) {
 						<input type="submit" value="削除" name="submit">
 					</form>
 				</td>
-
 			</tr>
 		<?php endforeach; ?>
 	</table>
