@@ -16,6 +16,15 @@ class UserController
         $this->request['post'] = $_POST;
     }
 
+    public function indexManager()
+    {
+        $manager = $this->User->findManager();
+        $params = [
+            'manager' => $manager,
+        ];
+        return $params;
+    }
+
     public function insert()
     {
         $new_user = [
@@ -23,5 +32,21 @@ class UserController
             'password' => $this->request['post']['password']
         ];
         $this->User->insert($new_user);
+    }
+
+    public function deletedManager()
+    {
+        $user_id = [
+            'user_id' => $this->request['post']['user_id']
+        ];
+        $this->User->deletedManager($user_id);
+    }
+
+    public function updateManager()
+    {
+        $update = [
+            'email' => $this->request['post']['email']
+        ];
+        $this->User->updateManager($update);
     }
 }
