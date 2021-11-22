@@ -25,15 +25,17 @@ class User extends Db
 	}
 
 	/**
-	 * usersテーブルへ登録
+	 * テーブルへ登録
 	 * 
 	 */
 	public function insert($arr = ['email' => "", 'password' => ""]) //: Int
 	{
+		//ハッシュ化
+		$password = password_hash($arr['password'], PASSWORD_DEFAULT);
 		$sql = 'INSERT INTO ' . $this->table . '(email, password) VALUES (:email, :password)';
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
-		$sth->bindParam(':password', $arr['password'], PDO::PARAM_STR);
+		$sth->bindParam(':password', $password, PDO::PARAM_STR);
 		$sth->execute();
 	}
 
@@ -67,10 +69,12 @@ class User extends Db
 	 */
 	public function updatePassword($arr = ['email' => "", 'password' => ""])
 	{
+		//ハッシュ化
+		$password = password_hash($arr['password'], PASSWORD_DEFAULT);
 		$sql = 'UPDATE ' . $this->table . ' SET password = :password WHERE email = :email';
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
-		$sth->bindParam(':password', $arr['password'], PDO::PARAM_STR);
+		$sth->bindParam(':password', $password, PDO::PARAM_STR);
 		$sth->execute();
 	}
 }
