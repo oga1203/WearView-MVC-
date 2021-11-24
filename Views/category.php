@@ -55,7 +55,7 @@ if (isset($_POST['category_id'])) {
 	</div>
 	<table class='list'>
 		<tr>
-			<th>ブランド</th>
+			<th>カテゴリー</th>
 			<th>削除</th>
 		</tr>
 		<?php foreach ($params['category'] as $category) : ?>

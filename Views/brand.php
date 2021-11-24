@@ -67,7 +67,6 @@ if (isset($_POST['brand_id'])) {
             <input type="submit" value="削除" name="submit">
           </form>
         </td>
-
       </tr>
     <?php endforeach; ?>
   </table>
