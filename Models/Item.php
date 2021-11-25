@@ -32,11 +32,18 @@ class Item extends Db
 	 * テーブルへ登録
 	 * 
 	 */
-	public function insert($arr = ['brand_name' => ""])
+	public function insert($arr = ['brand_id' => "", 'category_id' => "", 'category_mid_id' => "", 'item_name' => "", 'item_number' => "", 'item_explanation' => ""])
 	{
-		$sql = 'INSERT INTO ' . $this->table . '(brand_name) VALUES (:brand_name)';
+		$sql = 'INSERT INTO ' . $this->table;
+		$sql .= ' (brand_id, category_id, category_mid_id, item_name, item_number, item_explanation)';
+		$sql .= ' VALUES (:brand_id, :category_id, :category_mid_id, :item_name, :item_number, :item_explanation)';
 		$sth = $this->dbh->prepare($sql);
-		$sth->bindParam(':brand_name', $arr['brand_name'], PDO::PARAM_STR);
+		$sth->bindParam(':brand_id', $arr['brand_id'], PDO::PARAM_STR);
+		$sth->bindParam(':category_id', $arr['category_id'], PDO::PARAM_STR);
+		$sth->bindParam(':category_mid_id', $arr['category_mid_id'], PDO::PARAM_STR);
+		$sth->bindParam(':item_name', $arr['item_name'], PDO::PARAM_STR);
+		$sth->bindParam(':item_number', $arr['item_number'], PDO::PARAM_STR);
+		$sth->bindParam(':item_explanation', $arr['item_explanation'], PDO::PARAM_STR);
 		$sth->execute();
 	}
 
