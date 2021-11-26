@@ -72,9 +72,9 @@ class Item extends Db
 	 */
 	public function deleted($arr = ['item_id' => ""])
 	{
-		$sql = 'DELETE FROM ' . $this->table . ' WHERE brand_id = :id';
+		$sql = 'DELETE FROM ' . $this->table . ' WHERE item_id = :item_id';
 		$sth = $this->dbh->prepare($sql);
-		$sth->bindParam(':id', $arr['item_id'], PDO::PARAM_STR);
+		$sth->bindParam(':item_id', $arr['item_id'], PDO::PARAM_STR);
 		$sth->execute();
 	}
 }

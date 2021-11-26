@@ -3,6 +3,14 @@ require_once(ROOT_PATH . 'Controllers/ItemController.php');
 $items = new ItemController();
 $params = $items->view();
 $item = $params['item'];
+
+//削除
+if (isset($_POST['item_id'])) {
+  $deleted = $items->deleted();
+  //ページのリフレッシュ
+  header('Location: ./main.php');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -11,6 +19,7 @@ $item = $params['item'];
   <meta charset="utf-8">
   <title>Wear View</title>
   <link rel="stylesheet" type="text/css" href="/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
   <script src="/js/base.js"></script>
 </head>
@@ -22,7 +31,7 @@ $item = $params['item'];
   <div class="my_title">
     <h1><?= $item['item_name']; ?></h1><!-- DBから引用 -->
   </div>
-  <table>
+  <table class="insert">
     <tr>
       <th>品番</th>
       <td><?= $item['item_number']; ?></td>
@@ -62,8 +71,6 @@ $item = $params['item'];
     // } else {
     //   $likes_id = 'お気に入り';
     // }
-
-
     ?>
     <tr>
       <th colspan="2">
@@ -76,10 +83,14 @@ $item = $params['item'];
         <input type="button" class="sample_btn" id="result" value="お気に入り登録">
       </th>
     </tr>
-    <tr class="<?PHP echo $class; ?>">
-      <th colspan="2"><a href="goods_delete.php?id=<?php //echo $_GET['id']; 
-                                                    ?>" class="delete">削除</a></th>
-    </tr><!-- 管理者のみ -->
+    <tr>
+      <td colspan="2">
+        <form action="" method="post" onSubmit="return deleted()">
+          <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>" required>
+          <input type="submit" value="削除" name="submit">
+        </form>
+      </td>
+    </tr>
   </table>
   </div>
   <!---------------------------------------------------------------------------------------->
