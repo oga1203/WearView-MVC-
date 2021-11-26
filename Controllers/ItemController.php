@@ -3,6 +3,7 @@ require_once(ROOT_PATH . '/Models/Item.php');
 
 class ItemController
 {
+    private $request; //リクエストパラメータ(GET,POST)
     private $Item; //モデル
 
     public function __construct()
@@ -23,6 +24,19 @@ class ItemController
         return $params;
     }
 
+    public function view()
+    {
+        //中身がからの場合はエラーを表示
+        if (empty($this->request['get']['item_id'])) {
+            echo '指定のパラメータが不正です。このページを表示できません。';
+            exit;
+        }
+        $item = $this->Item->findById($this->request['get']['item_id']);
+        $params = [
+            'item' => $item
+        ];
+        return $params;
+    }
     public function insert()
     {
         $item = [

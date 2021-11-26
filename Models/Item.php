@@ -17,7 +17,6 @@ class Item extends Db
 	 */
 	public function findAll(): array
 	{
-		// $sql = 'SELECT ' . $this->table . '.item_name, brand.brand_name, category.category_name FROM ' . $this->table;
 		$sql = 'SELECT ' . $this->table . '.item_name,' . $this->table . '.item_id, brand.brand_name, category.category_name, category_mid.category_mid_name FROM ' . $this->table;
 		$sql .= ' INNER JOIN brand ON brand.brand_id = ' . $this->table . '.brand_id';
 		$sql .= ' INNER JOIN category ON category.category_id = ' . $this->table . '.category_id';
@@ -29,13 +28,33 @@ class Item extends Db
 	}
 
 	/**
+	 * テーブルから指定idに一致するデータを取得
+	 * 
+	 * @param integer $id 商品のID
+	 * @return Array $result 指定の商品データ
+	 */
+	public function findById($item_id = 0): array
+	{
+		$sql = 'SELECT ' . $this->table . '.item_name,' . $this->table . '.item_id,' . $this->table . '.item_number,' . $this->table . '.item_explanation, brand.brand_name, category.category_name, category_mid.category_mid_name FROM ' . $this->table;
+		$sql .= ' INNER JOIN brand ON brand.brand_id = ' . $this->table . '.brand_id';
+		$sql .= ' INNER JOIN category ON category.category_id = ' . $this->table . '.category_id';
+		$sql .= ' INNER JOIN category_mid ON category_mid.category_mid_id = ' . $this->table . '.category_mid_id';
+		$sql .= ' WHERE item_id = :item_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		$sth->execute();
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
 	 * テーブルへ登録
 	 * 
 	 */
 	public function insert($arr = ['brand_id' => "", 'category_id' => "", 'category_mid_id' => "", 'item_name' => "", 'item_number' => "", 'item_explanation' => ""])
 	{
 		$sql = 'INSERT INTO ' . $this->table;
-		$sql .= ' (brand_id, category_id, category_mid_id, item_name, item_number, item_explanation)';
+		$sql .= ' (brand_id, category_id, category_mid_id, item_id, item_name, item_number, item_explanation)';
 		$sql .= ' VALUES (:brand_id, :category_id, :category_mid_id, :item_name, :item_number, :item_explanation)';
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':brand_id', $arr['brand_id'], PDO::PARAM_STR);

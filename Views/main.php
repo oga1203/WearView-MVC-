@@ -105,7 +105,6 @@ if (isset($_POST["item_id"])) {
 			</form>
 		</tr>
 	</table>
-
 	<table class="list">
 		<tr>
 			<th>商品名</th>
@@ -120,6 +119,7 @@ if (isset($_POST["item_id"])) {
 				<td><?= $item["brand_name"] ?></td>
 				<td><?= $item["category_name"] ?></td>
 				<td><?= $item["category_mid_name"] ?></td>
+				<td><a href="item.php?item_id=<?= $item['item_id'] ?>">詳細</a></td>
 				<td>
 					<form action="" method="post" onSubmit="return deleted()">
 						<input type="hidden" name="item_id" value="<?= $item["item_id"] ?>" required>
