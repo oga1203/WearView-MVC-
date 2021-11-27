@@ -111,6 +111,7 @@ if (isset($_POST["item_id"])) {
 			<th>ブランド</th>
 			<th>カテゴリー</th>
 			<th>中カテゴリー</th>
+			<th>詳細</th>
 			<th class="<?PHP echo $class; ?>">削除</th>
 		</tr>
 		<?php foreach ($params["item"] as $item) : ?>

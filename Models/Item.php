@@ -54,7 +54,7 @@ class Item extends Db
 	public function insert($arr = ['brand_id' => "", 'category_id' => "", 'category_mid_id' => "", 'item_name' => "", 'item_number' => "", 'item_explanation' => ""])
 	{
 		$sql = 'INSERT INTO ' . $this->table;
-		$sql .= ' (brand_id, category_id, category_mid_id, item_id, item_name, item_number, item_explanation)';
+		$sql .= ' (brand_id, category_id, category_mid_id, item_name, item_number, item_explanation)';
 		$sql .= ' VALUES (:brand_id, :category_id, :category_mid_id, :item_name, :item_number, :item_explanation)';
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':brand_id', $arr['brand_id'], PDO::PARAM_STR);
