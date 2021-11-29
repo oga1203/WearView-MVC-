@@ -5,8 +5,6 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 	$users = new UserController();
 	$params = $users->check();
 	$user = $params['user'];
-	//var_dump($params);
-	// var_dump($user);
 	if (password_verify($_POST['password'], $user['password'])) {
 		//ログイン後、メイン画面へ遷移
 		header('Location: main.php');

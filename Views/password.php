@@ -3,8 +3,11 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 	require_once(ROOT_PATH . 'Controllers/UserController.php');
 	$users = new UserController();
 	$params = $users->updatePassword();
-	//ログインページへ画面遷移
-	header('Location: login_form.php');
+	$comp_alert = "<script type='text/javascript'>
+	alert('パスワード変更しました！');
+	location.href = 'login.php';
+	</script>";
+	echo $comp_alert;
 }
 ?>
 <!DOCTYPE html>
