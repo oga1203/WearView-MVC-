@@ -6,6 +6,9 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 	$params = $users->check();
 	$user = $params['user'];
 	if (password_verify($_POST['password'], $user['password'])) {
+		session_start();
+		$_SESSION['user_id'] = $user['user_id'];
+		$_SESSION['role'] = $user['role'];
 		//ログイン後、メイン画面へ遷移
 		header('Location: main.php');
 	} else {

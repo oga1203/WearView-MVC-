@@ -11,7 +11,6 @@ $ca_params = $categories->index();
 require_once(ROOT_PATH . 'Controllers/CategoryMidController.php');
 $categories_mid = new CategoryMidController();
 $ca_m_params = $categories_mid->index();
-
 //追加
 if (isset($_POST['brand_id']) && isset($_POST['category_id']) && isset($_POST['category_mid_id']) && isset($_POST['item_name'])) {
 	if (empty($error)) {
@@ -20,12 +19,17 @@ if (isset($_POST['brand_id']) && isset($_POST['category_id']) && isset($_POST['c
 		header("Refresh:1");
 	}
 }
-
 //削除
 if (isset($_POST["item_id"])) {
 	$deleted = $items->deleted();
 	//ページのリフレッシュ
 	header("Refresh:1");
+}
+session_start();
+// idが空の場合、リダイレクト
+if (empty($_SESSION['user_id'])) {
+	header("Location: ./login.php");
+	exit;
 }
 
 ?>
