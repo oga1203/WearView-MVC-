@@ -25,6 +25,21 @@ class User extends Db
 	}
 
 	/**
+	 * テーブルから指定レコードを取得
+	 * 
+	 * @return Array $result ログインユーザーレコード
+	 */
+	public function checkUser($arr = ['email' => ""])
+	{
+		$sql = 'SELECT * FROM ' . $this->table . ' WHERE email = :email';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
 	 * テーブルへ登録
 	 * 
 	 */

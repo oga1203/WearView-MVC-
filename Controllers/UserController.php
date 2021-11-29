@@ -25,6 +25,20 @@ class UserController
         return $params;
     }
 
+    public function check()
+    {
+        $login_user = [
+            'email' => $this->request['post']['email'],
+            //'password' => $this->request['post']['password']
+        ];
+        $user = $this->User->checkUser($login_user);
+        $params = [
+            'user' => $user,
+        ];
+        return $params;
+    }
+
+
     public function insert()
     {
         $new_user = [

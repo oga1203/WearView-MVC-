@@ -1,7 +1,23 @@
 <?php
-// require_once(ROOT_PATH . 'Controllers/UserController.php');
-// $user = new UserController();
-// $params = $user->index();
+//追加
+if (isset($_POST['email']) && isset($_POST['password'])) {
+	require_once(ROOT_PATH . 'Controllers/UserController.php');
+	$users = new UserController();
+	$params = $users->check();
+	$user = $params['user'];
+	//var_dump($params);
+	// var_dump($user);
+	if (password_verify($_POST['password'], $user['password'])) {
+		//ログイン後、メイン画面へ遷移
+		header('Location: main.php');
+	} else {
+		$error_alert = "<script type='text/javascript'>
+		alert('パスワードが違います！');
+		location.href = 'login.php';
+		</script>";
+		echo $error_alert;
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -22,7 +38,7 @@
 			<img src="/img/login.jpg" width="100%" height="100%">
 		</div>
 		<div class="login_body">
-			<form action="login.php" method="post">
+			<form action="" method="post">
 				<p>メールアドレス</p>
 				<input type="text" name="email" placeholder="sample@sample.com" required>
 				<p>パスワード</p>
