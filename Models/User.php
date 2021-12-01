@@ -25,7 +25,7 @@ class User extends Db
 	}
 
 	/**
-	 * テーブルから指定レコードを取得
+	 * テーブルから指定レコードを取得(ログイン用)
 	 * 
 	 * @return Array $result ログインユーザーレコード
 	 */
@@ -34,6 +34,21 @@ class User extends Db
 		$sql = 'SELECT * FROM ' . $this->table . ' WHERE email = :email';
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
+	 * テーブルから指定レコードを取得(マイページ用)
+	 * 
+	 * @return Array $result ログインユーザーレコード
+	 */
+	public function viewUser($arr = ['user_id' => ""])
+	{
+		$sql = 'SELECT * FROM ' . $this->table . ' WHERE user_id = :user_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':user_id', $arr['user_id'], PDO::PARAM_STR);
 		$sth->execute();
 		$result = $sth->fetch(PDO::FETCH_ASSOC);
 		return $result;
@@ -53,6 +68,24 @@ class User extends Db
 		$sth->bindParam(':password', $password, PDO::PARAM_STR);
 		$sth->execute();
 	}
+	/**
+	 * ユーザー情報更新
+	 * 
+	 */
+	public function updateUser($arr = ['user_id' => "", 'user_name' => "", 'email' => "", 'age' => "", 'height' => "", 'weight' => "", 'sex' => ""])
+	{
+		$sql = 'UPDATE ' . $this->table . ' SET user_name = :user_name, email = :email, age = :age, height = :height, weight = :weight, sex = :sex WHERE user_id = :user_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':user_id', $arr['user_id'], PDO::PARAM_STR);
+		$sth->bindParam(':user_name', $arr['user_name'], PDO::PARAM_STR);
+		$sth->bindParam(':email', $arr['email'], PDO::PARAM_STR);
+		$sth->bindParam(':age', $arr['age'], PDO::PARAM_STR);
+		$sth->bindParam(':height', $arr['height'], PDO::PARAM_STR);
+		$sth->bindParam(':weight', $arr['weight'], PDO::PARAM_STR);
+		$sth->bindParam(':sex', $arr['sex'], PDO::PARAM_STR);
+		$sth->execute();
+	}
+
 
 	/**
 	 * 管理者権限の削除

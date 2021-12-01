@@ -30,9 +30,19 @@ function deleted(){
 	}
 }
 
-function update(){
+function deletedManager(){
 	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
 	if(window.confirm('管理者権限を外しますか？')){
+		return true;
+	} else {
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false;
+	}
+}
+
+function update(){
+	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+	if(window.confirm('更新しますか？')){
 		return true;
 	} else {
 		window.alert('キャンセルされました'); // 警告ダイアログを表示
