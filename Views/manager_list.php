@@ -54,7 +54,7 @@ if (isset($_POST['user_id'])) {
         <td><?= $manager['user_name'] ?></td>
         <td><?= $manager['email'] ?></td>
         <td>
-          <form action="" method="post" onSubmit="return update()">
+          <form action="" method="post" onSubmit="return deletedManager()">
             <input type="hidden" name="user_id" value="<?= $manager['user_id'] ?>" required>
             <input type="submit" value="変更" name="submit">
           </form>
