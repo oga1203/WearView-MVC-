@@ -1,4 +1,10 @@
 <?php
+session_start();
+// idが空の場合、リダイレクト
+if (empty($_SESSION['user_id'])) {
+	header("Location: ./login.php");
+	exit;
+}
 require_once(ROOT_PATH . 'Controllers/ItemController.php');
 $items = new ItemController();
 $params = $items->index();
@@ -24,12 +30,6 @@ if (isset($_POST["item_id"])) {
 	$deleted = $items->deleted();
 	//ページのリフレッシュ
 	header("Refresh:1");
-}
-session_start();
-// idが空の場合、リダイレクト
-if (empty($_SESSION['user_id'])) {
-	header("Location: ./login.php");
-	exit;
 }
 
 ?>

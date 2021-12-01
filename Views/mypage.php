@@ -16,58 +16,16 @@ if ($user['sex'] == 1) {
 } else {
   $sex = '未選択';
 }
-//   // データベースの処理
-//   require './dbc.php';
-//   $sql = "SELECT * FROM users Where id = :id";
-//   $dbh = dbConnect();
+require_once(ROOT_PATH . 'Controllers/PostController.php');
+$posts = new PostController();
+$p_params = $posts->view();
+//投稿の削除
+if (isset($_POST['post_id'])) {
+  $deleted = $posts->deleted();
+  //ページのリフレッシュ
+  header("Location: mypage.php?user_id={$user['user_id']}");
+}
 
-//   try {
-//     // レコードの取得
-//     // プレースホルダーによるSQLインジェクション対策
-//     $stmt = $dbh->prepare($sql);
-//     $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
-//     $stmt->execute();
-//     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-//     // idが存在しない場合、リダイレクト
-//     if (!$result) {
-//       header("Location: ./login_form.php");
-//       exit;
-//     }
-//     // カラムの値をそれぞれ変数に代入
-//     $goods_id = $result['id'];
-//     $user_name = $result['user_name'];
-//     $email = $result['email'];
-//     $age = $result['age'];
-//     $weight = $result['weight'];
-//     $height = $result['height'];
-//     $sex = $result['sex'];
-//   } catch(PDOException $e) {
-//     exit($e);
-//   }
-//   $sql1 = "SELECT post.id, goods.goods_name AS 商品名, category.category AS カテゴリー, brand.brand AS ブランド, post AS 投稿内容, DATE_FORMAT(created_at, '%Y年%m月%d日') AS 登録日, goods.id AS 商品id, category.id AS カテゴリーid, brand.id AS ブランドid FROM post LEFT JOIN goods on post.goods_id = goods.id LEFT JOIN brand on goods.brand_id = brand.id LEFT JOIN category on goods.category_id = category.id WHERE user_id = :id";
-//   try {
-//     // レコードの取得
-//     // プレースホルダーによるSQLインジェクション対策
-//     $stmt1 = $dbh->prepare($sql1);
-//     $stmt1->bindValue(':id', (int)$id, PDO::PARAM_INT);
-//     $stmt1->execute();
-//   } catch(PDOException $e) {
-//     exit($e);
-//   }
-
-
-//   $sql2 = "SELECT goods.id AS ID, goods.goods_name AS 商品名 FROM likes LEFT JOIN goods on likes.goods_id = goods.id WHERE user_id = :id";
-//   try {
-
-//     // レコードの取得
-//     // プレースホルダーによるSQLインジェクション対策
-//     $stmt2 = $dbh->prepare($sql2);
-//     $stmt2->bindValue(':id', (int)$id, PDO::PARAM_INT);
-//     $stmt2->execute();
-
-//   } catch(PDOException $e) {
-//     exit($e);
-//   }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -85,11 +43,6 @@ if ($user['sex'] == 1) {
   <div class="my_title">
     <h1>マイページ</h1>
   </div>
-  <!--<div class="prof">
-		<div class="aicon_pic">
-			<p>pic</p>-->
-  <!-- DBから引用? -->
-  <!--</div>-->
   <table>
     <tr>
       <th>ユーザー名</th>
@@ -123,28 +76,29 @@ if ($user['sex'] == 1) {
   </div>
   <hr>
   <h1>投稿一覧</h1>
-  <div class="view_list">
-    <table>
+  <table class="list">
+    <tr>
+      <th>商品名</th>
+      <th>ブランド</th>
+      <th>カテゴリー</th>
+      <th>投稿内容</th>
+      <!-- <th>登録日</th> -->
+      <th class="<?PHP echo $class; ?>">削除</th>
+    </tr>
+    <?php foreach ($p_params['post'] as $post) : ?>
       <tr>
-        <th>商品名</th>
-        <th>ブランド</th>
-        <th>カテゴリー</th>
-        <th>投稿内容</th>
-        <th>登録日</th>
-        <th class="<?PHP echo $class; ?>">削除</th>
+        <td><a href="item.php?item_id=<?= $post['item_id'] ?>"><?= $post["item_name"] ?></a></td>
+        <td><?= $post["brand_name"] ?></td>
+        <td><?= $post["category_name"] ?></td>
+        <td><?= $post["review"] ?></td>
+        <td>
+          <form action="" method="post" onSubmit="return deleted()">
+            <input type="hidden" name="post_id" value="<?= $post['post_id'] ?>" required>
+            <input type="submit" value="削除" name="submit">
+        </td>
       </tr>
-      <?php foreach ($stmt1 as $row) : ?>
-        <tr>
-          <td><a href="goods.php?id=<?php echo $row['商品id']; ?>"><?php echo $row['商品名']; ?></a></td>
-          <td><a href="brand_list.php?id=<?php echo $row['ブランドid']; ?>"><?php echo $row['ブランド']; ?></a></td>
-          <td><a href="category_list.php?id=<?php echo $row['カテゴリーid']; ?>"><?php echo $row['カテゴリー']; ?></a></td>
-          <td><?php echo $row['投稿内容']; ?></td>
-          <td><?php echo $row['登録日']; ?></td>
-          <td class="<?PHP echo $class; ?>"><a href="post_delete.php?id=<?php echo $row['id']; ?>" class="delete">削除</a></td>
-        </tr>
-      <?php endforeach; ?>
-    </table>
-  </div>
+    <?php endforeach; ?>
+  </table>
   <hr>
   <h1>お気に入り一覧</h1>
   <table>

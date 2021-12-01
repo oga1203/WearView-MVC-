@@ -1,16 +1,25 @@
 <?php
+session_start();
 require_once(ROOT_PATH . 'Controllers/ItemController.php');
 $items = new ItemController();
 $params = $items->view();
 $item = $params['item'];
-
-//削除
+require_once(ROOT_PATH . 'Controllers/PostController.php');
+$posts = new PostController();
+$p_params = $posts->index();
+$post = $p_params['post'];
+//アイテムの削除
 if (isset($_POST['item_id'])) {
   $deleted = $items->deleted();
   //ページのリフレッシュ
-  header('Location: ./main.php');
+  header("Location: main.php");
 }
-
+//投稿の削除
+if (isset($_POST['post_id'])) {
+  $deleted = $posts->deleted();
+  //ページのリフレッシュ
+  header("Location: item.php?item_id={$item['item_id']}");
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -54,8 +63,7 @@ if (isset($_POST['item_id'])) {
     </tr>
     <tr>
       <th colspan="2">
-        <a href="post.php?id=<?php //echo $_GET['id']; 
-                              ?>">レビューを書く</a>
+        <a href="post.php?item_id=<?= $item['item_id'] ?>">レビューを書く</a>
       </th>
     </tr>
     <?PHP
@@ -122,49 +130,45 @@ if (isset($_POST['item_id'])) {
   <!---------------------------------------------------------------------------------------->
   <hr>
   <h1>投稿一覧</h1>
-  <div class="view_list">
-    <table>
+  <table class="list">
+    <tr>
+      <th>ユーザー名</th>
+      <th>年齢</th>
+      <th>性別</th>
+      <th>身長</th>
+      <th>体重</th>
+      <!-- 一旦、保留 -->
+      <!-- <th>登録日</th> -->
+      <!-- <th>サイズ</th> -->
+      <th>投稿内容</th>
+      <th class="<?PHP //echo $class; 
+                  ?>">削除</th>
+    </tr>
+    <?php
+    foreach ($p_params["post"] as $post) :
+      if ($post["sex"] == 1) {
+        $sex = '男';
+      } elseif ($post["sex"] == 2) {
+        $sex = '女';
+      } else {
+        $sex = '不明';
+      }
+    ?>
       <tr>
-        <th>ユーザー名</th>
-        <th>年齢</th>
-        <th>性別</th>
-        <th>身長</th>
-        <th>体重</th>
-        <th>登録日</th>
-        <th>サイズ</th>
-        <th>投稿内容</th>
-        <th class="<?PHP //echo $class; 
-                    ?>">削除</th>
+        <td><?= $post["user_name"] ?></td>
+        <td><?= $post["age"] ?></td>
+        <td><?php echo $sex; ?></td>
+        <td><?= $post["height"] ?></td>
+        <td><?= $post["weight"] ?></td>
+        <td><?= $post["review"] ?></td>
+        <td>
+          <form action="" method="post" onSubmit="return deleted()">
+            <input type="hidden" name="post_id" value="<?= $post['post_id'] ?>" required>
+            <input type="submit" value="削除" name="submit">
+        </td>
       </tr>
-      <?php //foreach ($stmt3 as $row) : 
-      ?>
-      <tr>
-        <td><?php //echo $row['ユーザー名']; 
-            ?></td>
-        <td><?php //echo $row['年齢']; 
-            ?></td>
-        <td><?php //echo $row['性別']; 
-            ?></td>
-        <td><?php //echo $row['身長']; 
-            ?></td>
-        <td><?php //echo $row['体重']; 
-            ?></td>
-        <td><?php //echo $row['登録日']; 
-            ?></td>
-        <td><?php //echo $row['サイズ']; 
-            ?></td>
-        <td><?php //echo $row['投稿内容']; 
-            ?></td>
-        <td class="<?PHP //echo $class; 
-                    ?>"><a href="post_delete.php?id=<?php //echo $row['id']; 
-                                                    ?>" class="delete">削除</a></td>
-      </tr>
-      <?php //endforeach; 
-      ?>
-    </table>
-    <!-- <a href="post_delete.php">削除</a> -->
-    <!-- ポップアップのみ表示&自分の投稿のみ削除可能にするか検討 -->
-  </div>
+    <?php endforeach; ?>
+  </table>
   <?php include("footer.php"); ?>
 </body>
 

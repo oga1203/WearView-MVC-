@@ -9,6 +9,7 @@ require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
 $params = $users->viewUser();
 $user = $params['user'];
+$sex = $user['sex'];
 
 //追加
 if (isset($_POST['user_id'])) {
@@ -59,6 +60,11 @@ if (isset($_POST['user_id'])) {
 					</select>
 				</div>
 				<input type="submit" value="更  新" name="submit" class="submit" style="font-size:18px;">
+				<div class="button">
+					<div class="back_button">
+						<a href="mypage.php?user_id=<?= $_SESSION['user_id'] ?>">戻&nbsp;&nbsp;る</a>
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
