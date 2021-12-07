@@ -35,6 +35,11 @@ if (isset($_POST['user_id'])) {
   ?>
   <table class='insert'>
     <tr>
+      <th>追加管理者のメールアドレス</th>
+      <th>追加</th>
+    </tr>
+
+    <tr>
       <form action="" method="post" onSubmit="return insert()">
         <th><input type="text" name="email" value="<?php if (isset($_POST['email'])) {
                                                       echo $_POST['email'];

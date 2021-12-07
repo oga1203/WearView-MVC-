@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(ROOT_PATH . 'Controllers/CategoryController.php');
 $categories = new CategoryController();
 $params = $categories->index();
@@ -15,15 +16,21 @@ if (isset($_POST['category_name'])) {
 	//$errorがnullならば登録されていないので追加
 	if (empty($error)) {
 		$insert = $categories->insert();
-		//ページのリフレッシュ
-		header("Refresh:1");
+		$comp_alert = "<script type='text/javascript'>
+		alert('追加しました！');
+		location.href = 'category.php';
+		</script>";
+		echo $comp_alert;
 	}
 }
 //削除
 if (isset($_POST['category_id'])) {
 	$deleted = $categories->deleted();
-	//ページのリフレッシュ
-	header("Refresh:1");
+	$comp_alert = "<script type='text/javascript'>
+	alert('削除しました！');
+	location.href = 'category.php';
+	</script>";
+	echo $comp_alert;
 }
 ?>
 <!DOCTYPE html>
@@ -41,6 +48,10 @@ if (isset($_POST['category_id'])) {
 <body>
 	<?php include("header.php"); ?>
 	<table class='insert'>
+		<tr>
+			<th>カテゴリー</th>
+			<th>追加</th>
+		</tr>
 		<tr>
 			<form action="" method="post" onSubmit="return insert()">
 				<th><input type="text" name="category_name" value="<?php if (isset($_POST['category_name'])) {

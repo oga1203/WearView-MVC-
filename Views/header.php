@@ -19,6 +19,7 @@
 			<a href="category_mid.php">中カテゴリー一覧</a>
 			<a href="brand.php">ブランド一覧</a>
 			<a href="mypage.php?user_id=<?= $_SESSION['user_id'] ?>">マイページ</a>
+			<a href="search.php">検索</a>
 			<a href="logout.php">ログアウト</a><!-- ログイン状態で表示 -->
 		</div>
 	</div>

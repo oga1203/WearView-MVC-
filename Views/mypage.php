@@ -105,11 +105,15 @@ if (isset($_POST['post_id'])) {
     <tr>
       <th>商品名</th>
     </tr>
-    <?php foreach ($stmt2 as $row) : ?>
-      <tr>
-        <td><a href="goods.php?id=<?php echo $row['ID']; ?>"><?php echo $row['商品名']; ?></a></td>
-      </tr>
-    <?php endforeach; ?>
+    <?php //foreach ($stmt2 as $row) : 
+    ?>
+    <tr>
+      <td><a href="goods.php?id=<?php //echo $row['ID']; 
+                                ?>"><?php //echo $row['商品名']; 
+                                    ?></a></td>
+    </tr>
+    <?php //endforeach; 
+    ?>
   </table>
   <?php include("footer.php"); ?>
 </body>

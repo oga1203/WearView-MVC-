@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(ROOT_PATH . 'Controllers/CategoryMidController.php');
 $categories_mid = new CategoryMidController();
 $params = $categories_mid->index();
@@ -18,15 +19,21 @@ if (isset($_POST['category_mid_name']) && isset($_POST['category_id'])) {
 	//$errorがnullならば登録されていないので追加
 	if (empty($error)) {
 		$insert = $categories_mid->insert();
-		//ページのリフレッシュ
-		header("Refresh:1");
+		$comp_alert = "<script type='text/javascript'>
+		alert('追加しました！');
+		location.href = 'category_mid.php';
+		</script>";
+		echo $comp_alert;
 	}
 }
 //削除
 if (isset($_POST['category_mid_id'])) {
 	$deleted = $categories_mid->deleted();
-	//ページのリフレッシュ
-	header("Refresh:1");
+	$comp_alert = "<script type='text/javascript'>
+	alert('削除しました！');
+	location.href = 'category_mid.php';
+	</script>";
+	echo $comp_alert;
 }
 ?>
 <!DOCTYPE html>
@@ -44,6 +51,11 @@ if (isset($_POST['category_mid_id'])) {
 <body>
 	<?php include("header.php"); ?>
 	<table class='insert'>
+		<tr>
+			<td>カテゴリー</td>
+			<td>中カテゴリー</td>
+			<td>追加</td>
+		</tr>
 		<tr>
 			<form action="" method="post" onSubmit="return insert()">
 				<th>

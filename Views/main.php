@@ -21,15 +21,21 @@ $ca_m_params = $categories_mid->index();
 if (isset($_POST['brand_id']) && isset($_POST['category_id']) && isset($_POST['category_mid_id']) && isset($_POST['item_name'])) {
 	if (empty($error)) {
 		$insert = $items->insert();
-		//ページのリフレッシュ
-		header("Refresh:1");
+		$comp_alert = "<script type='text/javascript'>
+		alert('追加しました！');
+		location.href = 'main.php';
+		</script>";
+		echo $comp_alert;
 	}
 }
 //削除
 if (isset($_POST["item_id"])) {
 	$deleted = $items->deleted();
-	//ページのリフレッシュ
-	header("Refresh:1");
+	$comp_alert = "<script type='text/javascript'>
+	alert('削除しました！');
+	location.href = 'main.php';
+	</script>";
+	echo $comp_alert;
 }
 
 ?>
@@ -48,6 +54,14 @@ if (isset($_POST["item_id"])) {
 <body>
 	<?php include("header.php"); ?>
 	<table class="insert">
+		<tr>
+			<th>ブランド</th>
+			<th>カテゴリー</th>
+			<th>中カテゴリー</th>
+			<th>商品名</th>
+			<th>商品品番</th>
+			<th>商品説明</th>
+		</tr>
 		<tr>
 			<form action="" method="post" onSubmit="return insert()">
 				<td>
@@ -86,26 +100,24 @@ if (isset($_POST["item_id"])) {
 						</select>
 					</label>
 				</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="item_name" value="<?php if (isset($_POST["item_name"])) {
-																echo $_POST["item_name"];
-															} ?>" required>
-			</td>
-			<td>
-				<input type="text" name="item_number" value="<?php if (isset($_POST["item_number"])) {
-																	echo $_POST["item_number"];
-																} ?>">
-			</td>
-			<td>
-				<input type="text" name="item_explanation" value="<?php if (isset($_POST["item_explanation"])) {
-																		echo $_POST["item_explanation"];
+				<td>
+					<input type="text" name="item_name" value="<?php if (isset($_POST["item_name"])) {
+																	echo $_POST["item_name"];
+																} ?>" required>
+				</td>
+				<td>
+					<input type="text" name="item_number" value="<?php if (isset($_POST["item_number"])) {
+																		echo $_POST["item_number"];
 																	} ?>">
-			</td>
+				</td>
+				<td>
+					<input type="text" name="item_explanation" value="<?php if (isset($_POST["item_explanation"])) {
+																			echo $_POST["item_explanation"];
+																		} ?>">
+				</td>
 		</tr>
 		<tr>
-			<th colspan="3"><input type="submit" value="追加" name="submit"></th>
+			<th colspan="6"><input type="submit" value="追加" name="submit"></th>
 			</form>
 		</tr>
 	</table>
