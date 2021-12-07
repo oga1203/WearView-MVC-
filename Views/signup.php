@@ -22,7 +22,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 </head>
 
 <body>
-	<?php include("header_log.php"); ?>
+	<?php include("header.php"); ?>
 	<div class="body">
 		<div class="upbody">
 			<h1>新規会員登録</h1>

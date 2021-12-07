@@ -48,7 +48,7 @@ if (isset($_POST)) {
 </head>
 
 <body>
-	<?php include("header_log.php"); ?>
+	<?php include("header.php"); ?>
 	<div class="loginall">
 		<div class="logpic">
 			<img src="/img/login.jpg" width="100%" height="100%">

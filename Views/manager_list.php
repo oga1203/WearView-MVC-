@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
 $params = $users->indexManager();
