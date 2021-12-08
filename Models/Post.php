@@ -15,11 +15,13 @@ class Post extends Db
 	 *
 	 * @return Array $result 全データ
 	 */
-	public function findAll(): array
+	public function findByItemId($item_id = 0): array
 	{
-		$sql = 'SELECT  users.user_name, users.age, users.height, users.weight, users.sex, ' . $this->table . '.review, ' . $this->table . '.post_id FROM ' . $this->table;
+		$sql = 'SELECT users.user_id, users.user_name, users.age, users.height, users.weight, users.sex, ' . $this->table . '.review, ' . $this->table . '.post_id FROM ' . $this->table;
 		$sql .= ' INNER JOIN users ON users.user_id = ' . $this->table . '.user_id';
+		$sql .= ' WHERE ' . $this->table . '.item_id = :item_id';
 		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':item_id', $item_id, PDO::PARAM_STR);
 		$sth->execute();
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 		return $result;
@@ -33,12 +35,13 @@ class Post extends Db
 	 */
 	public function findById($user_id = 0): array
 	{
-		$sql = 'SELECT item.item_id, item.item_name, category.category_name, brand.brand_name, ' . $this->table . '.review, ' . $this->table . '.post_id FROM ' . $this->table;
+		$sql = 'SELECT item.item_id, item.item_name, category.category_name, brand.brand_name, ' . $this->table . '.review, ' . $this->table . '.post_id, users.user_id FROM ' . $this->table;
 		$sql .= ' INNER JOIN item ON item.item_id = ' . $this->table . '.item_id';
 		$sql .= ' INNER JOIN brand ON brand.brand_id = item.brand_id';
 		$sql .= ' INNER JOIN category ON category.category_id = item.category_id';
 		$sql .= ' INNER JOIN category_mid ON category_mid.category_mid_id = item.category_mid_id';
-		$sql .= ' WHERE user_id = :user_id';
+		$sql .= ' INNER JOIN users ON users.user_id = ' . $this->table . '.user_id';
+		$sql .= ' WHERE ' . $this->table . '.user_id = :user_id';
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':user_id', $user_id, PDO::PARAM_STR);
 		$sth->execute();

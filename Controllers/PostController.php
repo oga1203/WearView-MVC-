@@ -15,9 +15,9 @@ class PostController
         $this->request['post'] = $_POST;
     }
 
-    public function index()
+    public function findByItemId()
     {
-        $post = $this->Post->findAll();
+        $post = $this->Post->findByItemId($this->request['get']['item_id']);
         $params = [
             'post' => $post,
         ];
