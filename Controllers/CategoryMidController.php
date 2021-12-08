@@ -32,6 +32,15 @@ class CategoryMidController
         $this->CategoryMid->insert($category_mid);
     }
 
+    public function viewCategoryList()
+    {
+        $category_mid = $this->CategoryMid->findByCategoryId($this->request['get']['category_id']);
+        $params = [
+            'category_mid' => $category_mid
+        ];
+        return $params;
+    }
+
     public function deleted()
     {
         $category_mid_id = [

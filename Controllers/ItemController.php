@@ -32,6 +32,25 @@ class ItemController
         ];
         return $params;
     }
+
+    public function viewBrandList()
+    {
+        $item = $this->Item->findByBrandId($this->request['get']['brand_id']);
+        $params = [
+            'item' => $item
+        ];
+        return $params;
+    }
+
+    public function viewCategoryMidList()
+    {
+        $item = $this->Item->findByCategoryMidId($this->request['get']['category_mid_id']);
+        $params = [
+            'item' => $item
+        ];
+        return $params;
+    }
+
     public function insert()
     {
         $item = [

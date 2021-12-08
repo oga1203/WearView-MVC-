@@ -20,6 +20,12 @@ if (isset($_POST['post_id'])) {
   //ページのリフレッシュ
   header("Location: item.php?item_id={$item['item_id']}");
 }
+//管理者権限に分けて表示を選択
+if ($_SESSION['role'] == 0) {
+  $table_class = null;
+} else {
+  $table_class = 'none';
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -91,7 +97,7 @@ if (isset($_POST['post_id'])) {
         <input type="button" class="sample_btn" id="result" value="お気に入り登録">
       </th>
     </tr>
-    <tr>
+    <tr class="<?php echo $table_class ?>">
       <td colspan="2">
         <form action="" method="post" onSubmit="return deleted()">
           <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>" required>

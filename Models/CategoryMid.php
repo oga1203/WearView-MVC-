@@ -26,6 +26,23 @@ class CategoryMid extends Db
 	}
 
 	/**
+	 * テーブルから指定idに一致するデータを取得
+	 * 
+	 * @param integer $category_id カテゴリーのID
+	 * @return Array $result 指定のカテゴリーデータ
+	 */
+	public function findByCategoryId($category_id = 0): array
+	{
+		$sql = 'SELECT * FROM ' . $this->table;
+		$sql .= ' WHERE category_id = :category_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':category_id', $category_id, PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
 	 * テーブルへ登録
 	 * 
 	 */
