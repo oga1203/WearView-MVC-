@@ -6,7 +6,7 @@ $params = $items->view();
 $item = $params['item'];
 require_once(ROOT_PATH . 'Controllers/PostController.php');
 $posts = new PostController();
-$p_params = $posts->index();
+$p_params = $posts->findByItemId();
 $post = $p_params['post'];
 //アイテムの削除
 if (isset($_POST['item_id'])) {
@@ -147,17 +147,24 @@ if ($_SESSION['role'] == 0) {
       <!-- <th>登録日</th> -->
       <!-- <th>サイズ</th> -->
       <th>投稿内容</th>
-      <th class="<?PHP //echo $class; 
-                  ?>">削除</th>
+      <!-- ここの表示をどうするか検討中 -->
+      <!-- <th class="<?PHP echo $table_class; ?>">削除</th> -->
     </tr>
     <?php
     foreach ($p_params["post"] as $post) :
+      // DBの性別判定表示
       if ($post["sex"] == 1) {
         $sex = '男';
       } elseif ($post["sex"] == 2) {
         $sex = '女';
       } else {
         $sex = '不明';
+      }
+      // 自分が投稿した投稿のみ削除可能
+      if ($post["user_id"] == $_SESSION["user_id"]) {
+        $table_class = '';
+      } else {
+        $table_class = 'none';
       }
     ?>
       <tr>
@@ -167,9 +174,9 @@ if ($_SESSION['role'] == 0) {
         <td><?= $post["height"] ?></td>
         <td><?= $post["weight"] ?></td>
         <td><?= $post["review"] ?></td>
-        <td>
+        <td class="<?php echo $table_class ?>">
           <form action="" method="post" onSubmit="return deleted()">
-            <input type="hidden" name="post_id" value="<?= $post['post_id'] ?>" required>
+            <input type="hidden" name="post_id" value="<?= $post['post_id'] ?>">
             <input type="submit" value="削除" name="submit">
         </td>
       </tr>
