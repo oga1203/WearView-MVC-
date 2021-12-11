@@ -1,6 +1,8 @@
 <?php
-if (isset($_SESSION)) {
-	$class = null;
+if (isset($_SESSION['role'])) {
+	$link = 'logout.php';
+	$link_name = 'ログアウト';
+	$mypage = $_SESSION['user_id'];
 	//管理者権限に分けて表示を選択
 	if ($_SESSION['role'] == 0) {
 		$role = null;
@@ -8,7 +10,10 @@ if (isset($_SESSION)) {
 		$role = 'none';
 	}
 } else {
-	$class = 'none';
+	$link = 'login.php';
+	$link_name = 'ログイン';
+	$mypage = null;
+	$table_class = 'none';
 	$role = 'none';
 }
 ?>
@@ -27,14 +32,14 @@ if (isset($_SESSION)) {
 		<a href="main.php">Wear View</a>
 		<div class="">
 			<a href="manager_list.php" class="<?php echo $role; ?>">管理者一覧</a><!-- 管理者がログイン状態で表示 -->
-			<a href="category.php" class="<?php echo $class; ?>">カテゴリー検索</a>
+			<a href="category.php">カテゴリー検索</a>
 			<!-- 不要？検討中 -->
-			<!-- <a href="category_mid.php" class="<?php echo $class; ?>">中カテゴリー一覧</a> -->
-			<a href="brand.php" class="<?php echo $class; ?>">ブランド検索</a>
-			<a href="mypage.php?user_id=<?= $_SESSION['user_id'] ?>" class="<?php echo $class; ?>">マイページ</a>
+			<!-- <a href="category_mid.php">中カテゴリー一覧</a> -->
+			<a href="brand.php">ブランド検索</a>
+			<a href="mypage.php?user_id=<?= $mypage ?>" class="<?php echo $table_class; ?>">マイページ</a>
 			<!-- 不要？検討中 -->
-			<!-- <a href="search.php" class="<?php echo $class; ?>">検索</a> -->
-			<a href="logout.php" class="<?php echo $class; ?>">ログアウト</a><!-- ログイン状態で表示 -->
+			<!-- <a href=" search.php">検索</a> -->
+			<a href="<?php echo $link; ?>"><?php echo $link_name; ?></a><!-- ログイン状態で表示 -->
 		</div>
 	</div>
 </body>

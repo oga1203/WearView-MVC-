@@ -22,20 +22,22 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 
 <body>
 	<?php include("header.php"); ?>
+	<div class="title">
+		<h1>パスワード再設定</h1>
+	</div>
 	<div class="body">
-		<div class="upbody">
-			<h1>パスワード再設定</h1>
-		</div>
-		<div class="downbody">
-			<form action="" method="post">
-				<h2>メールアドレス</h2>
+		<form action="" method="post">
+			<div class="input">
+				<p>登録済みのメールアドレス</p>
 				<input type="text" name="email" placeholder="sample@sample.com">
-				<h2>パスワード</h2>
-				<input type="password" name="password" placeholder="new password">
-				<div class="signup_comp_button">
-					<input type="submit" name="login" value="変更" class="submit" id="login">
-				</div>
-		</div>
+			</div>
+			<div class="input">
+				<p>新しいパスワード</p>
+				<input type="password" name="password" placeholder="New Password">
+			</div>
+			<div class="sub">
+				<input type="submit" name="login" value="変更" class="submit" id="login">
+			</div>
 		</form>
 	</div>
 	<?php include("footer.php"); ?>

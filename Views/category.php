@@ -3,35 +3,36 @@ session_start();
 require_once(ROOT_PATH . 'Controllers/CategoryController.php');
 $categories = new CategoryController();
 $params = $categories->index();
-$error = '';
-//追加
-if (isset($_POST['category_name'])) {
-	//改善の余地あり？
-	foreach ($params['category'] as $category) {
-		if ($_POST['category_name'] == $category['category_name']) {
-			$error = '既に登録されています。';
-			break;
-		}
-	}
-	//$errorがnullならば登録されていないので追加
-	if (empty($error)) {
-		$insert = $categories->insert();
-		$comp_alert = "<script type='text/javascript'>
-		alert('追加しました！');
-		location.href = 'category.php';
-		</script>";
-		echo $comp_alert;
-	}
-}
-//削除
-if (isset($_POST['category_id'])) {
-	$deleted = $categories->deleted();
-	$comp_alert = "<script type='text/javascript'>
-	alert('削除しました！');
-	location.href = 'category.php';
-	</script>";
-	echo $comp_alert;
-}
+// 固定するので不要？検討中
+// $error = '';
+//　//追加
+// if (isset($_POST['category_name'])) {
+// 	//改善の余地あり？
+// 	foreach ($params['category'] as $category) {
+// 		if ($_POST['category_name'] == $category['category_name']) {
+// 			$error = '既に登録されています。';
+// 			break;
+// 		}
+// 	}
+// 	//$errorがnullならば登録されていないので追加
+// 	if (empty($error)) {
+// 		$insert = $categories->insert();
+// 		$comp_alert = "<script type='text/javascript'>
+// 		alert('追加しました！');
+// 		location.href = 'category.php';
+// 		</script>";
+// 		echo $comp_alert;
+// 	}
+// }
+// //削除
+// if (isset($_POST['category_id'])) {
+// 	$deleted = $categories->deleted();
+// 	$comp_alert = "<script type='text/javascript'>
+// 	alert('削除しました！');
+// 	location.href = 'category.php';
+// 	</script>";
+// 	echo $comp_alert;
+// }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -47,37 +48,40 @@ if (isset($_POST['category_id'])) {
 
 <body>
 	<?php include("header.php"); ?>
-	<table class='insert'>
+	<!-- 固定するので不要？検討中 -->
+	<!-- <table class='insert'>
 		<tr>
 			<th>カテゴリー</th>
 			<th>追加</th>
 		</tr>
 		<tr>
 			<form action="" method="post" onSubmit="return insert()">
-				<th><input type="text" name="category_name" value="<?php if (isset($_POST['category_name'])) {
-																		echo $_POST['category_name'];
-																	} ?>" required></th>
+				<th><input type="text" name="category_name" value="" required></th>
 				<th><input type="submit" value="追加" name="submit"></th>
 			</form>
 		</tr>
 	</table>
 	<div class='error'>
 		<p><?php echo $error; ?></p>
-	</div>
+	</div> -->
+	<!-- 固定するので不要？検討中 -->
 	<table class='list'>
 		<tr>
 			<th>カテゴリー</th>
-			<th>削除</th>
+			<!-- 固定するので不要？検討中 -->
+			<!-- <th>削除</th> -->
 		</tr>
 		<?php foreach ($params['category'] as $category) : ?>
 			<tr>
-				<td><?= $category['category_name'] ?></td>
-				<td>
+				<td><a href="category_list.php?category_id=<?= $category['category_id'] ?>"><?= $category['category_name'] ?></a></td>
+				<!-- 固定するので不要？検討中 -->
+				<!-- <td>
 					<form action="" method="post" onSubmit="return deleted()">
 						<input type="hidden" name="category_id" value="<?= $category['category_id'] ?>" required>
 						<input type="submit" value="削除" name="submit">
 					</form>
-				</td>
+				</td> -->
+				<!-- 固定するので不要？検討中 -->
 			</tr>
 		<?php endforeach; ?>
 	</table>

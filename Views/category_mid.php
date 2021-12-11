@@ -6,35 +6,36 @@ $params = $categories_mid->index();
 require_once(ROOT_PATH . 'Controllers/CategoryController.php');
 $categories = new CategoryController();
 $ca_params = $categories->index();
-$error = '';
-//追加
-if (isset($_POST['category_mid_name']) && isset($_POST['category_id'])) {
-	//改善の余地あり？
-	foreach ($params['category_mid'] as $category_mid) {
-		if ($_POST['category_mid_name'] == $category_mid['category_mid_name']) {
-			$error = '既に登録されています。';
-			break;
-		}
-	}
-	//$errorがnullならば登録されていないので追加
-	if (empty($error)) {
-		$insert = $categories_mid->insert();
-		$comp_alert = "<script type='text/javascript'>
-		alert('追加しました！');
-		location.href = 'category_mid.php';
-		</script>";
-		echo $comp_alert;
-	}
-}
-//削除
-if (isset($_POST['category_mid_id'])) {
-	$deleted = $categories_mid->deleted();
-	$comp_alert = "<script type='text/javascript'>
-	alert('削除しました！');
-	location.href = 'category_mid.php';
-	</script>";
-	echo $comp_alert;
-}
+// 固定するので不要？検討中
+// $error = '';
+// //追加
+// if (isset($_POST['category_mid_name']) && isset($_POST['category_id'])) {
+// 	//改善の余地あり？
+// 	foreach ($params['category_mid'] as $category_mid) {
+// 		if ($_POST['category_mid_name'] == $category_mid['category_mid_name']) {
+// 			$error = '既に登録されています。';
+// 			break;
+// 		}
+// 	}
+// 	//$errorがnullならば登録されていないので追加
+// 	if (empty($error)) {
+// 		$insert = $categories_mid->insert();
+// 		$comp_alert = "<script type='text/javascript'>
+// 		alert('追加しました！');
+// 		location.href = 'category_mid.php';
+// 		</script>";
+// 		echo $comp_alert;
+// 	}
+// }
+// //削除
+// if (isset($_POST['category_mid_id'])) {
+// 	$deleted = $categories_mid->deleted();
+// 	$comp_alert = "<script type='text/javascript'>
+// 	alert('削除しました！');
+// 	location.href = 'category_mid.php';
+// 	</script>";
+// 	echo $comp_alert;
+// }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -50,7 +51,8 @@ if (isset($_POST['category_mid_id'])) {
 
 <body>
 	<?php include("header.php"); ?>
-	<table class='insert'>
+	<!-- 固定するので不要？検討中 -->
+	<!-- <table class='insert'>
 		<tr>
 			<td>カテゴリー</td>
 			<td>中カテゴリー</td>
@@ -79,23 +81,27 @@ if (isset($_POST['category_mid_id'])) {
 	</table>
 	<div class='error'>
 		<p><?php echo $error; ?></p>
-	</div>
+	</div> -->
+	<!-- 固定するので不要？検討中 -->
 	<table class='list'>
 		<tr>
 			<th>カテゴリー</th>
 			<th>中カテゴリー</th>
-			<th>削除</th>
+			<!-- 固定するので不要？検討中 -->
+			<!-- <th>削除</th> -->
 		</tr>
 		<?php foreach ($params['category_mid'] as $category_mid) : ?>
 			<tr>
 				<td><?= $category_mid['category_name'] ?></td>
 				<td><?= $category_mid['category_mid_name'] ?></td>
-				<td>
+				<!-- 固定するので不要？検討中 -->
+				<!-- <td>
 					<form action="" method="post" onSubmit="return deleted()">
 						<input type="hidden" name="category_mid_id" value="<?= $category_mid['category_mid_id'] ?>" required>
 						<input type="submit" value="削除" name="submit">
 					</form>
-				</td>
+				</td> -->
+				<!-- 固定するので不要？検討中 -->
 			</tr>
 		<?php endforeach; ?>
 	</table>

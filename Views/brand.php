@@ -32,6 +32,14 @@ if (isset($_POST['brand_id'])) {
   </script>";
   echo $comp_alert;
 }
+if (isset($_SESSION['role'])) {
+  //管理者権限に分けて表示を選択
+  if ($_SESSION['role'] == 0) {
+    $table_class = null;
+  } else {
+    $table_class = 'none';
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -47,32 +55,36 @@ if (isset($_POST['brand_id'])) {
 
 <body>
   <?php include("header.php"); ?>
-  <table class='insert'>
-    <tr>
-      <td>ブランド</td>
-      <td>追加</td>
-    </tr>
-    <tr>
-      <form action="" method="post" onSubmit="return insert()">
-        <th><input type="text" name="brand_name" value="<?php if (isset($_POST['brand_name'])) {
-                                                          echo $_POST['brand_name'];
-                                                        } ?>" required></th>
-        <th><input type="submit" value="追加" name="submit"></th>
-      </form>
-    </tr>
-  </table>
-  <div class='error'>
-    <p><?php echo $error; ?></p>
+  <!-- 管理者のみ表示 -->
+  <div class="<?php echo $table_class ?>">
+    <table class='insert'>
+      <tr>
+        <td>ブランド</td>
+        <td>追加</td>
+      </tr>
+      <tr>
+        <form action="" method="post" onSubmit="return insert()">
+          <th><input type="text" name="brand_name" value="<?php if (isset($_POST['brand_name'])) {
+                                                            echo $_POST['brand_name'];
+                                                          } ?>" required></th>
+          <th><input type="submit" value="追加" name="submit"></th>
+        </form>
+      </tr>
+    </table>
+    <div class='error'>
+      <p><?php echo $error; ?></p>
+    </div>
   </div>
   <table class='list'>
     <tr>
       <th>ブランド</th>
-      <th>削除</th>
+      <th class="<?php echo $table_class ?>">削除</th>
     </tr>
     <?php foreach ($params['brand'] as $brand) : ?>
       <tr>
-        <td><?= $brand['brand_name'] ?></td>
-        <td>
+        <td><a href="brand_list.php?brand_id=<?= $brand['brand_id'] ?>"><?= $brand['brand_name'] ?></a></td>
+        <!-- 管理者のみ表示 -->
+        <td class="<?php echo $table_class ?>">
           <form action="" method="post" onSubmit="return deleted()">
             <input type="hidden" name="brand_id" value="<?= $brand['brand_id'] ?>" required>
             <input type="submit" value="削除" name="submit">

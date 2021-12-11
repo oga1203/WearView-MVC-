@@ -20,11 +20,18 @@ if (isset($_POST['post_id'])) {
   //ページのリフレッシュ
   header("Location: item.php?item_id={$item['item_id']}");
 }
-//管理者権限に分けて表示を選択
-if ($_SESSION['role'] == 0) {
-  $table_class = null;
+if (isset($_SESSION['role'])) {
+  //管理者権限に分けて表示を選択
+  if ($_SESSION['role'] == 0) {
+    $table_class = null;
+  } else {
+    $table_class = 'none';
+  }
+  $view = null;
+  $log = 'none';
 } else {
-  $table_class = 'none';
+  $view = 'none';
+  $log = null;
 }
 ?>
 <!DOCTYPE html>
@@ -43,7 +50,7 @@ if ($_SESSION['role'] == 0) {
   <?php include("header.php"); ?>
   <?php //include("login_now.php");
   ?>
-  <div class="my_title">
+  <div class="title">
     <h1><?= $item['item_name']; ?></h1><!-- DBから引用 -->
   </div>
   <table class="insert">
@@ -67,11 +74,20 @@ if ($_SESSION['role'] == 0) {
       <th>商品説明</th>
       <td><?= $item['item_explanation']; ?></td>
     </tr>
-    <tr>
+    <!-- ログインすると表示 -->
+    <tr class="<?PHP echo $view; ?>">
       <th colspan="2">
         <a href="post.php?item_id=<?= $item['item_id'] ?>">レビューを書く</a>
       </th>
     </tr>
+    <!-- ログインすると表示 -->
+    <!-- ログインしていないときに表示 -->
+    <tr class="<?PHP echo $log; ?>">
+      <td colspan="2">
+        <p>ログインするとレビューを書けます。</p>
+      </td>
+    </tr>
+    <!-- ログインしていないときに表示 -->
     <?PHP
     // $sql2 = "SELECT COUNT(*) AS count FROM likes WHERE goods_id = $goods_id AND user_id = $user_id ";
 
@@ -86,7 +102,8 @@ if ($_SESSION['role'] == 0) {
     //   $likes_id = 'お気に入り';
     // }
     ?>
-    <tr>
+    <!-- ログインすると表示 -->
+    <tr class="<?PHP echo $view; ?>">
       <th colspan="2">
         <input type="hidden" name="user_id" value="<?php //echo $user_id; 
                                                     ?>">
@@ -97,10 +114,18 @@ if ($_SESSION['role'] == 0) {
         <input type="button" class="sample_btn" id="result" value="お気に入り登録">
       </th>
     </tr>
-    <tr class="<?php echo $table_class ?>">
+    <!-- ログインすると表示 -->
+    <!-- ログインしていないときに表示 -->
+    <tr class="<?PHP echo $log; ?>">
+      <td colspan="2">
+        <p>ログインするとお気に入り登録できます。</p>
+      </td>
+    </tr>
+    <!-- ログインしていないときに表示 -->
+    <tr class="<?php echo $view ?>">
       <td colspan="2">
         <form action="" method="post" onSubmit="return deleted()">
-          <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>" required>
+          <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>">
           <input type="submit" value="削除" name="submit">
         </form>
       </td>
@@ -135,7 +160,9 @@ if ($_SESSION['role'] == 0) {
   </script>
   <!---------------------------------------------------------------------------------------->
   <hr>
-  <h1>投稿一覧</h1>
+  <div class="title">
+    <h1>投稿一覧</h1>
+  </div>
   <table class="list">
     <tr>
       <th>ユーザー名</th>
@@ -160,9 +187,13 @@ if ($_SESSION['role'] == 0) {
       } else {
         $sex = '不明';
       }
-      // 自分が投稿した投稿のみ削除可能
-      if ($post["user_id"] == $_SESSION["user_id"]) {
-        $table_class = '';
+      if (isset($_SESSION['user_id'])) {
+        // 自分が投稿した投稿のみ削除可能
+        if ($post["user_id"] == $_SESSION["user_id"]) {
+          $table_class = null;
+        } else {
+          $table_class = 'none';
+        }
       } else {
         $table_class = 'none';
       }

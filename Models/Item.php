@@ -48,6 +48,46 @@ class Item extends Db
 	}
 
 	/**
+	 * テーブルから指定idに一致するデータを取得
+	 * 
+	 * @param integer $brand_id ブランドのID
+	 * @return Array $result 指定の商品データ
+	 */
+	public function findByBrandId($brand_id = 0): array
+	{
+		$sql = 'SELECT ' . $this->table . '.item_name,' . $this->table . '.item_id,' . $this->table . '.item_number,' . $this->table . '.item_explanation, brand.brand_name, category.category_name, category_mid.category_mid_name FROM ' . $this->table;
+		$sql .= ' INNER JOIN brand ON brand.brand_id = ' . $this->table . '.brand_id';
+		$sql .= ' INNER JOIN category ON category.category_id = ' . $this->table . '.category_id';
+		$sql .= ' INNER JOIN category_mid ON category_mid.category_mid_id = ' . $this->table . '.category_mid_id';
+		$sql .= ' WHERE brand.brand_id = :brand_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':brand_id', $brand_id, PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
+	 * テーブルから指定idに一致するデータを取得
+	 * 
+	 * @param integer $category_mid_id 中カテゴリーのID
+	 * @return Array $result 指定の商品データ
+	 */
+	public function findByCategoryMidId($category_mid_id = 0): array
+	{
+		$sql = 'SELECT ' . $this->table . '.item_name,' . $this->table . '.item_id,' . $this->table . '.item_number,' . $this->table . '.item_explanation, brand.brand_name, category.category_name, category_mid.category_mid_name FROM ' . $this->table;
+		$sql .= ' INNER JOIN brand ON brand.brand_id = ' . $this->table . '.brand_id';
+		$sql .= ' INNER JOIN category ON category.category_id = ' . $this->table . '.category_id';
+		$sql .= ' INNER JOIN category_mid ON category_mid.category_mid_id = ' . $this->table . '.category_mid_id';
+		$sql .= ' WHERE category_mid.category_mid_id = :category_mid_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':category_mid_id', $category_mid_id, PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
 	 * テーブルへ登録
 	 * 
 	 */

@@ -3,13 +3,13 @@ $errors = [];
 if (isset($_POST)) {
 	// メールアドレスのチェック
 	if (empty($_POST['email'])) {
-		$errors['email'] = "メールアドレスは必須入力です。正しくご入力ください。";
+		$errors['email'] = "メールアドレスは必須入力です。<br>正しくご入力ください。";
 	} elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 		$errors['email'] = "メールアドレスは正しくご入力ください。";
 	}
 	// パスワードのチェック
 	if (empty($_POST['password'])) {
-		$errors['password'] = "パスワードは必須入力です。正しくご入力ください。";
+		$errors['password'] = "パスワードは必須入力です。<br>正しくご入力ください。";
 	} elseif (!preg_match("/^[a-zA-Z0-9]+$/", $_POST['password'])) {
 		$errors['password'] = "パスワードは半角英数字のみでご入力ください。";
 	}
@@ -49,46 +49,46 @@ if (isset($_POST)) {
 
 <body>
 	<?php include("header.php"); ?>
-	<div class="loginall">
-		<div class="logpic">
-			<img src="/img/login.jpg" width="100%" height="100%">
-		</div>
-		<div class="login_body">
-			<form action="" method="post">
+	<div class="title">
+		<h1>ログイン</h1>
+	</div>
+	<div class="body">
+		<form action="" method="post">
+			<div class="input">
 				<p>メールアドレス</p>
 				<input type="text" name="email" placeholder="sample@sample.com">
-				<!-- エラーの際に表示 -->
-				<div class="error">
-					<p>
-						<?php
-						if (isset($_POST['email'])) {
-							echo $errors['email'];
-						}
-						?>
-					</p>
-				</div>
+			</div>
+			<!-- エラーの際に表示 -->
+			<div class="error">
+				<p>
+					<?php
+					if (isset($_POST['email'])) {
+						echo $errors['email'];
+					}
+					?>
+				</p>
+			</div>
+			<div class="input">
 				<p>パスワード</p>
-				<input type="password" name="password" placeholder="password">
-				<!-- エラーの際に表示 -->
-				<div class="error">
-					<p>
-						<?php
-						if (isset($_POST['password'])) {
-							echo $errors['password'];
-						}
-						?>
-					</p>
-				</div>
-				<div class="button">
-					<input type="submit" name="login" value="ログイン" class="submit" id="login" style="font-size:18px;">
-				</div>
-			</form>
-			<div class="signup_button">
-				<a href="signup.php">新規会員登録</a>
+				<input type="password" name="password" placeholder="Password">
 			</div>
-			<div class="pass">
-				<a href="password.php">パスワードを忘れた方はこちら</a>
+			<!-- エラーの際に表示 -->
+			<div class="error">
+				<p>
+					<?php
+					if (isset($_POST['password'])) {
+						echo $errors['password'];
+					}
+					?>
+				</p>
 			</div>
+			<div class="login_sub">
+				<input type="submit" name="login" value="ログイン" class="submit" id="login">
+			</div>
+		</form>
+		<div class="reset">
+			<p><a href="signup.php">新規会員登録</a></p>
+			<p><a href="password.php">パスワードを忘れた方はこちら</a></p>
 		</div>
 	</div>
 	<?php include("footer.php"); ?>

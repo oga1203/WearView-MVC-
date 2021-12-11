@@ -34,13 +34,14 @@ if (isset($_POST['post_id'])) {
   <meta charset="utf-8">
   <title>Wear View</title>
   <link rel="stylesheet" type="text/css" href="/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
   <script src="/js/base.js"></script>
 </head>
 
 <body>
   <?php include("header.php"); ?>
-  <div class="my_title">
+  <div class="title">
     <h1>マイページ</h1>
   </div>
   <table>
@@ -69,13 +70,15 @@ if (isset($_POST['post_id'])) {
       <td><?php echo $sex; ?></td>
     </tr>
     <tr>
-      <th></th>
-      <td><a href="mypage_edit.php?user_id=<?= $_SESSION['user_id'] ?>">編集</a></td>
+      <!-- <th></th> -->
+      <td colspan="2"><a href="mypage_edit.php?user_id=<?= $_SESSION['user_id'] ?>">編集</a></td>
     </tr>
   </table>
   </div>
   <hr>
-  <h1>投稿一覧</h1>
+  <div class="title">
+    <h1>投稿一覧</h1>
+  </div>
   <table class="list">
     <tr>
       <th>商品名</th>
@@ -100,7 +103,9 @@ if (isset($_POST['post_id'])) {
     <?php endforeach; ?>
   </table>
   <hr>
-  <h1>お気に入り一覧</h1>
+  <div class="title">
+    <h1>お気に入り一覧</h1>
+  </div>
   <table>
     <tr>
       <th>商品名</th>
