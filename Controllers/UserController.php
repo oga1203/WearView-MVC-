@@ -25,16 +25,68 @@ class UserController
         return $params;
     }
 
+    public function validationUser()
+    {
+        if (isset($this->request['post']['email'])) {
+            $email = $this->request['post']['email'];
+        } else {
+            return false;
+        }
+        if (isset($this->request['post']['password'])) {
+            $password = $this->request['post']['password'];
+        } else {
+            return false;
+        }
+        // メールアドレスのチェック
+        if (empty($email)) {
+            $error_email = "メールアドレスは必須入力です。<br>正しくご入力ください。";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error_email = "メールアドレスは正しくご入力ください。";
+        } else {
+            $error_email = null;
+        }
+        // パスワードのチェック
+        if (empty($password)) {
+            $error_password = "パスワードは必須入力です。<br>正しくご入力ください。";
+        } elseif (!preg_match("/^[a-zA-Z0-9]+$/", $password)) {
+            $error_password = "パスワードは半角英数字のみでご入力ください。";
+        } else {
+            $error_password = null;
+        }
+        if (isset($error_email) || isset($error_password)) {
+            $errors = ['email' => $error_email, 'password' => $error_password];
+            return $errors;
+        } else {
+            return true;
+        }
+    }
+
     public function check()
     {
-        $login_user = [
+        $email = [
             'email' => $this->request['post']['email'],
         ];
-        $user = $this->User->checkUser($login_user);
+        $user = $this->User->checkUser($email);
         $params = [
             'user' => $user,
         ];
-        return $params;
+        $db_pass = $user['password'];
+        $password = $this->request['post']['password'];
+        $check_password = $this->validationPassword($password, $db_pass);
+        if ($check_password === false) {
+            return false;
+        } else {
+            return $params;
+        }
+    }
+
+    public function validationPassword($password, $db_pass)
+    {
+        if (password_verify($password, $db_pass)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function viewUser()

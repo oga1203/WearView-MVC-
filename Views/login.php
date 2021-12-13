@@ -1,37 +1,20 @@
 <?php
-$errors = [];
-if (isset($_POST)) {
-	// メールアドレスのチェック
-	if (empty($_POST['email'])) {
-		$errors['email'] = "メールアドレスは必須入力です。<br>正しくご入力ください。";
-	} elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-		$errors['email'] = "メールアドレスは正しくご入力ください。";
-	}
-	// パスワードのチェック
-	if (empty($_POST['password'])) {
-		$errors['password'] = "パスワードは必須入力です。<br>正しくご入力ください。";
-	} elseif (!preg_match("/^[a-zA-Z0-9]+$/", $_POST['password'])) {
-		$errors['password'] = "パスワードは半角英数字のみでご入力ください。";
-	}
-	// エラーが空かどうかのチェック
-	if (empty($errors)) {
-		require_once(ROOT_PATH . 'Controllers/UserController.php');
-		$users = new UserController();
-		$params = $users->check();
+require_once(ROOT_PATH . 'Controllers/UserController.php');
+$users = new UserController();
+// バリデーションチェック
+$error = $users->validationUser();
+if ($error === true) {
+	$params = $users->check();
+	// パスワードチェック
+	if ($params === false) {
+		$error = [];
+		$error['password'] = 'パスワードが違います！';
+	} else {
+		session_start();
 		$user = $params['user'];
-		// パスワードが合っているかどうかのチェック
-		if (password_verify($_POST['password'], $user['password'])) {
-			session_start();
-			$_SESSION = $user;
-			//ログイン後、メイン画面へ遷移
-			header('Location: main.php');
-		} else {
-			$error_alert = "<script type='text/javascript'>
-			alert('パスワードが違います！');
-			location.href = 'login.php';
-			</script>";
-			echo $error_alert;
-		}
+		$_SESSION = $user;
+		//ログイン後、メイン画面へ遷移
+		header('Location: main.php');
 	}
 }
 ?>
@@ -53,35 +36,27 @@ if (isset($_POST)) {
 		<h1>ログイン</h1>
 	</div>
 	<div class="body">
-		<form action="" method="post">
+		<form action="login.php" method="post">
 			<div class="input">
 				<p>メールアドレス</p>
 				<input type="text" name="email" placeholder="sample@sample.com">
 			</div>
 			<!-- エラーの際に表示 -->
-			<div class="error">
-				<p>
-					<?php
-					if (isset($_POST['email'])) {
-						echo $errors['email'];
-					}
-					?>
-				</p>
-			</div>
+			<?php if (isset($error['email'])) { ?>
+				<div class="error">
+					<p><?php echo $error['email']; ?></p>
+				</div>
+			<?php } ?>
 			<div class="input">
 				<p>パスワード</p>
 				<input type="password" name="password" placeholder="Password">
 			</div>
 			<!-- エラーの際に表示 -->
-			<div class="error">
-				<p>
-					<?php
-					if (isset($_POST['password'])) {
-						echo $errors['password'];
-					}
-					?>
-				</p>
-			</div>
+			<?php if (isset($error['password'])) { ?>
+				<div class="error">
+					<p><?php echo $error['password']; ?></p>
+				</div>
+			<?php } ?>
 			<div class="login_sub">
 				<input type="submit" name="login" value="ログイン" class="submit" id="login">
 			</div>
