@@ -20,7 +20,6 @@
 		</div>
 		<div class="footer">
 			<p><a href="">利用規約</a></p>
-			<p><a href="https://www.facebook.com">Facebook</a></p>
 			<p><a href="">プライバシーポリシー</a></p>
 		</div>
 		<div class="footer">
