@@ -23,6 +23,20 @@ class Brand extends Db
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 		return $result;
 	}
+	/**
+	 * テーブルへ登録
+	 * 
+	 */
+	public function checkBrand($arr = ['brand_name' => ""])
+	{
+		$sql = 'SELECT * FROM ' . $this->table;
+		$sql .= ' WHERE brand_name = :brand_name';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':brand_name', $arr['brand_name'], PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
 
 	/**
 	 * テーブルへ登録

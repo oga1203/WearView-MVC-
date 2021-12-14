@@ -3,18 +3,15 @@ session_start();
 require_once(ROOT_PATH . 'Controllers/BrandController.php');
 $brands = new BrandController();
 $params = $brands->index();
-$error = '';
-//追加
+$brand_name = null;
+$error = null;
+//登録されているかチェック
+$check = $brands->check();
 if (isset($_POST['brand_name'])) {
-  //改善の余地あり？
-  foreach ($params['brand'] as $brand) {
-    if ($_POST['brand_name'] == $brand['brand_name']) {
-      $error = '既に登録されています。';
-      break;
-    }
-  }
-  //$errorがnullならば登録されていないので追加
-  if (empty($error)) {
+  if ($check === false) {
+    $brand_name = $_POST['brand_name'];
+    $error = '既に登録されています。';
+  } else {
     $insert = $brands->insert();
     $comp_alert = "<script type='text/javascript'>
     alert('追加しました！');
@@ -64,16 +61,18 @@ if (isset($_SESSION['role'])) {
       </tr>
       <tr>
         <form action="" method="post" onSubmit="return insert()">
-          <th><input type="text" name="brand_name" value="<?php if (isset($_POST['brand_name'])) {
-                                                            echo $_POST['brand_name'];
-                                                          } ?>" required></th>
+          <th><input type="text" name="brand_name" value="<?php echo $brand_name; ?>" required></th>
           <th><input type="submit" value="追加" name="submit"></th>
         </form>
       </tr>
     </table>
-    <div class='error'>
-      <p><?php echo $error; ?></p>
-    </div>
+    <!-- エラーの際に表示 -->
+    <?php if (isset($error)) { ?>
+      <div class="error">
+        <p><?php echo $error; ?></p>
+      </div>
+    <?php } ?>
+    <!-- エラーの際に表示 -->
   </div>
   <table class='list'>
     <tr>

@@ -5,7 +5,7 @@ $users = new UserController();
 $params = $users->indexManager();
 //追加
 if (isset($_POST['email'])) {
-  //バリデーション機能がないので追加予定
+  //バリデーション機能がないので追加予定 => 一旦保留
   $update = $users->updateManager();
   //ページのリフレッシュ
   header("Refresh:1");

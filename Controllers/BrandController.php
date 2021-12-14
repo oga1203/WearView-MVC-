@@ -23,6 +23,25 @@ class BrandController
         return $params;
     }
 
+    public function check()
+    {
+        if (isset($this->request['post']['brand_name'])) {
+            $brands = [
+                'brand_name' => $this->request['post']['brand_name'],
+            ];
+        } else {
+            return false;
+        }
+        $brand = $this->Brand->checkBrand($brands);
+        // メールアドレスが登録判定
+        if (empty($brand)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function insert()
     {
         $brand = [
