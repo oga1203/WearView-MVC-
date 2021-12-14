@@ -25,6 +25,7 @@ class UserController
         return $params;
     }
 
+    //メールアドレスとパスワードのバリデーション
     public function validationUser()
     {
         if (isset($this->request['post']['email'])) {
@@ -53,6 +54,7 @@ class UserController
         } else {
             $error_password = null;
         }
+        // エラー判定
         if (isset($error_email) || isset($error_password)) {
             $errors = ['email' => $error_email, 'password' => $error_password];
             return $errors;
@@ -67,21 +69,29 @@ class UserController
             'email' => $this->request['post']['email'],
         ];
         $user = $this->User->checkUser($email);
-        $params = [
-            'user' => $user,
-        ];
-        $db_pass = $user['password'];
-        $password = $this->request['post']['password'];
-        $check_password = $this->validationPassword($password, $db_pass);
-        if ($check_password === false) {
-            return false;
+        // メールアドレスが登録判定
+        if (empty($user)) {
+            return null;
         } else {
-            return $params;
+            $db_pass = $user['password'];
+            $password = $this->request['post']['password'];
+            $check_password = $this->validationPassword($password, $db_pass);
+            //パスワードの合致判定
+            if ($check_password === false) {
+                return false;
+            } else {
+                $params = [
+                    'user' => $user,
+                ];
+                return $params;
+            }
         }
     }
 
+    // メールの合致判定
     public function validationPassword($password, $db_pass)
     {
+        // パスワードの合致判定
         if (password_verify($password, $db_pass)) {
             return true;
         } else {

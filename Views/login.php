@@ -1,20 +1,41 @@
 <?php
 require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
+$email = null;
+$password = null;
 // バリデーションチェック
 $error = $users->validationUser();
 if ($error === true) {
 	$params = $users->check();
+	$error = [];
 	// パスワードチェック
 	if ($params === false) {
-		$error = [];
-		$error['password'] = 'パスワードが違います！';
+		$email = $_POST['email'];
+		$password = $_POST['password'];;
+		$error['password'] = 'パスワードが違います。';
 	} else {
-		session_start();
-		$user = $params['user'];
-		$_SESSION = $user;
-		//ログイン後、メイン画面へ遷移
-		header('Location: main.php');
+		if ($params == null) {
+			$email = $_POST['email'];
+			$password = $_POST['password'];;
+			$error['email'] = 'メールアドレスが登録されていません。';
+		} else {
+			session_start();
+			$user = $params['user'];
+			$_SESSION = $user;
+			//ログイン後、メイン画面へ遷移
+			header('Location: main.php');
+		}
+	}
+} else {
+	if (isset($_POST['email'])) {
+		$email = $_POST['email'];
+	} else {
+		$email = null;
+	}
+	if (isset($_POST['password'])) {
+		$password = $_POST['password'];
+	} else {
+		$password = null;
 	}
 }
 ?>
@@ -36,10 +57,10 @@ if ($error === true) {
 		<h1>ログイン</h1>
 	</div>
 	<div class="body">
-		<form action="login.php" method="post">
+		<form action="" method="post">
 			<div class="input">
 				<p>メールアドレス</p>
-				<input type="text" name="email" placeholder="sample@sample.com">
+				<input type="text" name="email" placeholder="sample@sample.com" value="<?php echo $email ?>">
 			</div>
 			<!-- エラーの際に表示 -->
 			<?php if (isset($error['email'])) { ?>
@@ -47,9 +68,10 @@ if ($error === true) {
 					<p><?php echo $error['email']; ?></p>
 				</div>
 			<?php } ?>
+			<!-- エラーの際に表示 -->
 			<div class="input">
 				<p>パスワード</p>
-				<input type="password" name="password" placeholder="Password">
+				<input type="password" name="password" placeholder="Password" value="<?php echo $password ?>">
 			</div>
 			<!-- エラーの際に表示 -->
 			<?php if (isset($error['password'])) { ?>
@@ -57,6 +79,7 @@ if ($error === true) {
 					<p><?php echo $error['password']; ?></p>
 				</div>
 			<?php } ?>
+			<!-- エラーの際に表示 -->
 			<div class="login_sub">
 				<input type="submit" name="login" value="ログイン" class="submit" id="login">
 			</div>
