@@ -32,7 +32,6 @@ if (isset($_POST['user_id'])) {
 
 <body>
   <?php include("header.php"); ?>
-  <?php //include("login_now.php");
   ?>
   <table class='insert'>
     <tr>
