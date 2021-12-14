@@ -32,7 +32,6 @@ if (isset($_POST['user_id'])) {
 
 <body>
   <?php include("header.php"); ?>
-  ?>
   <table class='insert'>
     <tr>
       <th>追加管理者のメールアドレス</th>
