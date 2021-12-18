@@ -11,21 +11,7 @@ class Favorite extends Db
 	}
 
 	/**
-	 * テーブルからすべてデータを取得
-	 * 
-	 * @return Array $result 全データ
-	 */
-	public function findAll(): array
-	{
-		$sql = 'SELECT * FROM ' . $this->table;
-		$sth = $this->dbh->prepare($sql);
-		$sth->execute();
-		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
-		return $result;
-	}
-
-	/**
-	 * テーブルへ登録
+	 * 商品ページにユーザーが登録しているかのチェック
 	 * 
 	 */
 	public function findById($arr = ['user_id' => "", 'item_id' => ""])
@@ -37,6 +23,22 @@ class Favorite extends Db
 		$sth->bindParam(':item_id', $arr['item_id'], PDO::PARAM_STR);
 		$sth->execute();
 		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
+	 * マイページに表示
+	 * 
+	 */
+	public function findByUserId($user_id)
+	{
+		$sql = 'SELECT item.item_name, item.item_id, ' . $this->table . '.favorite_id FROM ' . $this->table;
+		$sql .= ' INNER JOIN item ON item.item_id = ' . $this->table . '.item_id';
+		$sql .= ' WHERE user_id = :user_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 		return $result;
 	}
 
@@ -65,6 +67,19 @@ class Favorite extends Db
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindParam(':user_id', $arr['user_id'], PDO::PARAM_STR);
 		$sth->bindParam(':item_id', $arr['item_id'], PDO::PARAM_STR);
+		$sth->execute();
+	}
+
+	/**
+	 * レコードの削除
+	 * 
+	 */
+	public function deletedUserFavoriteItem($favorite_id)
+	{
+		$sql = 'DELETE FROM ' . $this->table;
+		$sql .= ' WHERE favorite_id = :favorite_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':favorite_id', $favorite_id, PDO::PARAM_STR);
 		$sth->execute();
 	}
 }

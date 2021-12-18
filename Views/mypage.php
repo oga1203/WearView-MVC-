@@ -1,10 +1,6 @@
 <?php
 session_start();
 //idが空の場合、リダイレクト
-if (empty($_SESSION['user_id'])) {
-  header("Location: ./login.php");
-  exit;
-}
 require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
 $params = $users->viewUser();
@@ -16,6 +12,9 @@ if ($user['sex'] == 1) {
 } else {
   $sex = '未選択';
 }
+require_once(ROOT_PATH . 'Controllers/FavoriteController.php');
+$favorites = new FavoriteController();
+$favorite_item = $favorites->indexUser();
 require_once(ROOT_PATH . 'Controllers/PostController.php');
 $posts = new PostController();
 $p_params = $posts->view();
@@ -25,7 +24,12 @@ if (isset($_POST['post_id'])) {
   //ページのリフレッシュ
   header("Location: mypage.php?user_id={$user['user_id']}");
 }
-
+//お気に入りの削除の削除
+if (isset($_POST['favorite_id'])) {
+  $favorites->deletedUserFavoriteItem();
+  //ページのリフレッシュ
+  header("Location: mypage.php?user_id={$user['user_id']}");
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -106,19 +110,23 @@ if (isset($_POST['post_id'])) {
   <div class="title">
     <h1>お気に入り一覧</h1>
   </div>
-  <table>
+  <table class="list">
     <tr>
       <th>商品名</th>
+      <th>削除</th>
     </tr>
-    <?php //foreach ($stmt2 as $row) : 
-    ?>
-    <tr>
-      <td><a href="goods.php?id=<?php //echo $row['ID']; 
-                                ?>"><?php //echo $row['商品名']; 
-                                    ?></a></td>
-    </tr>
-    <?php //endforeach; 
-    ?>
+    <?php foreach ($favorite_item as $favorite) : ?>
+      <tr>
+        <td><a href="item.php?item_id=<?= $favorite['item_id']; ?>"><?php echo $favorite['item_name']; ?></a></td>
+        <td>
+          <form action="" method="post" onSubmit="return deleted()">
+            <input type="hidden" name="favorite_id" value="<?= $favorite['favorite_id'] ?>">
+            <input type="submit" value="削除" name="submit">
+          </form>
+        </td>
+
+      </tr>
+    <?php endforeach; ?>
   </table>
   <?php include("footer.php"); ?>
 </body>
