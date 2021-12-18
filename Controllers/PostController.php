@@ -24,6 +24,41 @@ class PostController
         return $params;
     }
 
+    public function checkEmpty()
+    {
+        if (isset($this->request['post']['review'])) {
+            $review = $this->request['post']['review'];
+            //continue;
+        } else {
+            return null;
+        }
+        if (empty($review)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function checkSameUser()
+    {
+        if (isset($this->request['post']['user_id'])) {
+            $user_id = $this->request['post']['user_id'];
+            //continue;
+        } else {
+            return null;
+        }
+        $post = [
+            'item_id' => $this->request['post']['item_id'],
+            'user_id' => $user_id,
+        ];
+        $check = $this->Post->check($post);
+        if ($check === false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function view()
     {
         $post = $this->Post->findById($this->request['get']['user_id']);

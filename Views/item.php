@@ -8,6 +8,10 @@ require_once(ROOT_PATH . 'Controllers/PostController.php');
 $posts = new PostController();
 $p_params = $posts->findByItemId();
 $post = $p_params['post'];
+require_once(ROOT_PATH . 'Controllers/FavoriteController.php');
+$favorites = new FavoriteController();
+$user_id = $_SESSION['user_id'];
+$fav = $favorites->index();
 //アイテムの削除
 if (isset($_POST['item_id'])) {
   $deleted = $items->deleted();
@@ -44,12 +48,34 @@ if (isset($_SESSION['role'])) {
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
   <script src="/js/base.js"></script>
+  <!-- jsファイルに格納できないか検討 -->
+  <script>
+    $(function() {
+      // ボタンがクリックされたら
+      $(".sample_btn").on("click", function(event) {
+        // 入力されたID値を取得
+        item_id = $('.item_id').val();
+        user_id = $('.user_id').val();
+        $.ajax({
+          type: "POST",
+          url: "favorite.php",
+          data: {
+            "item_id": item_id,
+            "user_id": user_id,
+          },
+          dataType: "text"
+        }).done(function(data) {
+          $('#result').text(data);
+        }).fail(function(XMLHttpRequest, status, e) {
+          alert(e);
+        });
+      });
+    });
+  </script>
 </head>
 
 <body>
   <?php include("header.php"); ?>
-  <?php //include("login_now.php");
-  ?>
   <div class="title">
     <h1><?= $item['item_name']; ?></h1><!-- DBから引用 -->
   </div>
@@ -88,29 +114,12 @@ if (isset($_SESSION['role'])) {
       </td>
     </tr>
     <!-- ログインしていないときに表示 -->
-    <?PHP
-    // $sql2 = "SELECT COUNT(*) AS count FROM likes WHERE goods_id = $goods_id AND user_id = $user_id ";
-
-    // $stmt2 = $dbh->prepare($sql2);
-    // $stmt2->bindParam(':id', $id, PDO::PARAM_STR);
-    // $stmt2->execute();
-    // $member = $stmt2->fetch();
-
-    // if ($member['count'] > 0) {
-    //   $likes_id = 'お気に入り済';
-    // } else {
-    //   $likes_id = 'お気に入り';
-    // }
-    ?>
     <!-- ログインすると表示 -->
     <tr class="<?PHP echo $view; ?>">
       <th colspan="2">
-        <input type="hidden" name="user_id" value="<?php //echo $user_id; 
-                                                    ?>">
-        <input type="hidden" name="goods_id" value="<?php //echo $goods_id; 
-                                                    ?>">
-        <div id="result"><?php //echo $likes_id; 
-                          ?></div>
+        <input type="hidden" class="user_id" name="user_id" value="<?= $_SESSION['user_id']; ?>">
+        <input type="hidden" class="item_id" name="item_id" value="<?= $_GET['item_id']; ?>">
+        <div id="result"><?php echo $fav; ?></div>
         <input type="button" class="sample_btn" id="result" value="お気に入り登録">
       </th>
     </tr>
@@ -132,33 +141,6 @@ if (isset($_SESSION['role'])) {
     </tr>
   </table>
   </div>
-  <!---------------------------------------------------------------------------------------->
-  <script>
-    $(function() {
-      //.sampleをクリックしてajax通信を行う
-      $('.sample_btn').click(function() {
-        $.ajax({
-          url: 'favorite.php',
-          type: 'POST',
-          /* json形式で受け取るためdataTypeを変更 */
-          dataType: 'text',
-          data: {
-            user_id: $('[name="user_id"]').val(),
-            goods_id: $('[name="goods_id"]').val()
-          }
-        }).done(function(data) {
-          //alert('通信成功！');
-          $('#result').text(data);
-
-        }).fail(function(data) {
-          /* 通信失敗時 */
-          alert('通信失敗！');
-
-        });
-      });
-    });
-  </script>
-  <!---------------------------------------------------------------------------------------->
   <hr>
   <div class="title">
     <h1>投稿一覧</h1>

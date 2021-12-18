@@ -50,6 +50,23 @@ class Post extends Db
 	}
 
 	/**
+	 * 登録済みか確認
+	 *
+	 */
+	public function check($arr = ['item_id' => "", 'user_id' => ""])
+	{
+		$sql = 'SELECT * FROM ' . $this->table;
+		$sql .= ' WHERE user_id = :user_id';
+		$sql .= ' AND item_id = :item_id';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindParam(':user_id', $arr['user_id'], PDO::PARAM_STR);
+		$sth->bindParam(':item_id', $arr['item_id'], PDO::PARAM_STR);
+		$sth->execute();
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
 	 * テーブルへ登録
 	 *
 	 */
