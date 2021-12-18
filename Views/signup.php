@@ -73,7 +73,6 @@ if ($error === true) {
 				</div>
 			<?php } ?>
 			<!-- エラーの際に表示 -->
-
 			<div class="sub">
 				<input type="submit" value="新規登録" class="submit">
 			</div>
