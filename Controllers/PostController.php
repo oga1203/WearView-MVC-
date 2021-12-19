@@ -62,10 +62,7 @@ class PostController
     public function view()
     {
         $post = $this->Post->findById($this->request['get']['user_id']);
-        $params = [
-            'post' => $post
-        ];
-        return $params;
+        return $post;
     }
     public function insert()
     {

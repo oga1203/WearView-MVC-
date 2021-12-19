@@ -17,9 +17,14 @@ class FavoriteController
 
     public function index()
     {
+        if (isset($this->request['session']['user_id'])) {
+            $user_id = $this->request['session']['user_id'];
+        } else {
+            return null;
+        }
         $favorites = [
             'item_id' => $this->request['get']['item_id'],
-            'user_id' => $this->request['session']['user_id'],
+            'user_id' => $user_id,
         ];
         $favorite = $this->Favorite->findById($favorites);
         if ($favorite != false) {

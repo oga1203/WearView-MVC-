@@ -144,13 +144,30 @@ class UserController
         ];
         $this->User->updatePassword($update);
     }
+
+    public function checkUpdateUser()
+    {
+        $email = $this->request['post']['email'];
+        // メールアドレスのチェック
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = "メールアドレスは正しくご入力ください。";
+        } else {
+            $error = null;
+        }
+        if (empty($error)) {
+            return true;
+        } else {
+            return $error;
+        }
+    }
+
     public function updateUser()
     {
         $update = [
             'user_id'   => $this->request['post']['user_id'],
             'user_name' => $this->request['post']['user_name'],
             'email'     => $this->request['post']['email'],
-            'age'       => $this->request['post']['age'],
+            // 'age'       => $this->request['post']['age'],
             'height'    => $this->request['post']['height'],
             'weight'    => $this->request['post']['weight'],
             'sex'       => $this->request['post']['sex']
