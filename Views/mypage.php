@@ -5,13 +5,6 @@ require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
 $params = $users->viewUser();
 $user = $params['user'];
-if ($user['sex'] == 1) {
-  $sex = '男性';
-} elseif ($user['sex'] == 2) {
-  $sex = '女性';
-} else {
-  $sex = '未選択';
-}
 require_once(ROOT_PATH . 'Controllers/FavoriteController.php');
 $favorites = new FavoriteController();
 $favorite_item = $favorites->indexUser();
@@ -57,21 +50,42 @@ if (isset($_POST['favorite_id'])) {
       <th>メールアドレス</th>
       <td><?= $user['email']; ?></td>
     </tr>
-    <tr>
+    <!-- 一旦保留 -->
+    <!-- <tr>
       <th>年齢</th>
       <td><?= $user['age']; ?></td>
-    </tr>
+    </tr> -->
     <tr>
       <th>身長</th>
-      <td><?= $user['height']; ?></td>
+      <td>
+        <?php if (isset($user['height'])) : ?>
+          <?= $user['height']; ?>cm
+        <?php else : ?>
+          <p>登録されていません。</p>
+        <?php endif; ?>
+      </td>
     </tr>
     <tr>
       <th>体重</th>
-      <td><?= $user['weight']; ?></td>
+      <td>
+        <?php if (isset($user['weight'])) : ?>
+          <?= $user['weight']; ?>kg
+        <?php else : ?>
+          <p>登録されていません。</p>
+        <?php endif; ?>
+      </td>
     </tr>
     <tr>
       <th>性別</th>
-      <td><?php echo $sex; ?></td>
+      <td>
+        <?php if ($user['sex'] == 1) : ?>
+          男性
+        <?php elseif ($user['sex'] == 2) : ?>
+          女性
+        <?php else : ?>
+          未選択
+        <?php endif; ?>
+      </td>
     </tr>
     <tr>
       <!-- <th></th> -->
@@ -83,51 +97,62 @@ if (isset($_POST['favorite_id'])) {
   <div class="title">
     <h1>投稿一覧</h1>
   </div>
-  <table class="list">
-    <tr>
-      <th>商品名</th>
-      <th>ブランド</th>
-      <th>カテゴリー</th>
-      <th>投稿内容</th>
-      <!-- <th>登録日</th> -->
-      <th class="<?PHP echo $class; ?>">削除</th>
-    </tr>
-    <?php foreach ($p_params['post'] as $post) : ?>
+  <?php if (empty($p_params)) : ?>
+    <div class="no_list">
+      <p>投稿がありません。</p>
+    </div>
+  <?php else : ?>
+    <table class="list">
       <tr>
-        <td><a href="item.php?item_id=<?= $post['item_id'] ?>"><?= $post["item_name"] ?></a></td>
-        <td><?= $post["brand_name"] ?></td>
-        <td><?= $post["category_name"] ?></td>
-        <td><?= $post["review"] ?></td>
-        <td>
-          <form action="" method="post" onSubmit="return deleted()">
-            <input type="hidden" name="post_id" value="<?= $post['post_id'] ?>" required>
-            <input type="submit" value="削除" name="submit">
-        </td>
+        <th>商品名</th>
+        <th>ブランド</th>
+        <th>カテゴリー</th>
+        <th>投稿内容</th>
+        <!-- <th>登録日</th> -->
+        <th class="<?PHP echo $class; ?>">削除</th>
       </tr>
-    <?php endforeach; ?>
-  </table>
+      <?php foreach ($p_params as $post) : ?>
+        <tr>
+          <td><a href="item.php?item_id=<?= $post['item_id'] ?>"><?php echo $post["item_name"] ?></a></td>
+          <td><?php echo $post["brand_name"] ?></td>
+          <td><?php echo $post["category_name"] ?></td>
+          <td><?php echo $post["review"] ?></td>
+          <td>
+            <form action="" method="post" onSubmit="return deleted()">
+              <input type="hidden" name="post_id" value="<?= $post['post_id'] ?>" required>
+              <input type="submit" value="削除" name="submit">
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+  <?php endif; ?>
   <hr>
   <div class="title">
     <h1>お気に入り一覧</h1>
   </div>
-  <table class="list">
-    <tr>
-      <th>商品名</th>
-      <th>削除</th>
-    </tr>
-    <?php foreach ($favorite_item as $favorite) : ?>
+  <?php if (empty($favorite_item)) : ?>
+    <div class="no_list">
+      <p>お気に入り商品がありません。</p>
+    </div>
+  <?php else : ?>
+    <table class="list">
       <tr>
-        <td><a href="item.php?item_id=<?= $favorite['item_id']; ?>"><?php echo $favorite['item_name']; ?></a></td>
-        <td>
-          <form action="" method="post" onSubmit="return deleted()">
-            <input type="hidden" name="favorite_id" value="<?= $favorite['favorite_id'] ?>">
-            <input type="submit" value="削除" name="submit">
-          </form>
-        </td>
-
+        <th>商品名</th>
+        <th>削除</th>
       </tr>
-    <?php endforeach; ?>
-  </table>
+      <?php foreach ($favorite_item as $favorite) : ?>
+        <tr>
+          <td><a href="item.php?item_id=<?= $favorite['item_id']; ?>"><?php echo $favorite['item_name']; ?></a></td>
+          <td>
+            <form action="" method="post" onSubmit="return deleted()">
+              <input type="hidden" name="favorite_id" value="<?= $favorite['favorite_id'] ?>">
+              <input type="submit" value="削除" name="submit">
+            </form>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+  <?php endif; ?>
   <?php include("footer.php"); ?>
 </body>
 

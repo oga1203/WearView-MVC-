@@ -12,14 +12,6 @@ if (isset($_POST['item_id'])) {
   </script>";
   echo $comp_alert;
 }
-if (isset($_SESSION['role'])) {
-  //管理者権限に分けて表示を選択
-  if ($_SESSION['role'] == 0) {
-    $table_class = null;
-  } else {
-    $table_class = 'none';
-  }
-}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -42,7 +34,11 @@ if (isset($_SESSION['role'])) {
       <!-- 不要かな？ -->
       <!-- <th>カテゴリー</th>
       <th>中カテゴリー</th> -->
-      <th class="<?php echo $table_class ?>">削除</th>
+      <?php if (isset($_SESSION['user_id'])) : ?>
+        <?php if ($_SESSION['role'] == 0) : ?>
+          <th>削除</th>
+        <?php endif; ?>
+      <?php endif; ?>
     </tr>
     <?php foreach ($params['item'] as $item) : ?>
       <tr>
@@ -52,12 +48,16 @@ if (isset($_SESSION['role'])) {
         <!-- <td><?= $item["category_name"] ?></td>
         <td><?= $item["category_mid_name"] ?></td> -->
         <!-- 管理者のみ表示 -->
-        <td class="<?php echo $table_class ?>">
-          <form action="" method="post" onSubmit="return deleted()">
-            <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>">
-            <input type="submit" value="削除" name="submit">
-          </form>
-        </td>
+        <?php if (isset($_SESSION['user_id'])) : ?>
+          <?php if ($_SESSION['role'] == 0) : ?>
+            <td>
+              <form action="" method="post" onSubmit="return deleted()">
+                <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>">
+                <input type="submit" value="削除" name="submit">
+              </form>
+            </td>
+          <?php endif; ?>
+        <?php endif; ?>
       </tr>
     <?php endforeach; ?>
   </table>

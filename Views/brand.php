@@ -53,42 +53,52 @@ if (isset($_SESSION['role'])) {
 <body>
   <?php include("header.php"); ?>
   <!-- 管理者のみ表示 -->
-  <div class="<?php echo $table_class ?>">
-    <table class='insert'>
-      <tr>
-        <td>ブランド</td>
-        <td>追加</td>
-      </tr>
-      <tr>
-        <form action="" method="post" onSubmit="return insert()">
-          <th><input type="text" name="brand_name" value="<?php echo $brand_name; ?>" required></th>
-          <th><input type="submit" value="追加" name="submit"></th>
-        </form>
-      </tr>
-    </table>
-    <!-- エラーの際に表示 -->
-    <?php if (isset($error)) { ?>
-      <div class="error">
-        <p><?php echo $error; ?></p>
-      </div>
-    <?php } ?>
-    <!-- エラーの際に表示 -->
-  </div>
+  <?php if (isset($_SESSION['user_id'])) : ?>
+    <?php if ($_SESSION['role'] == 0) : ?>
+      <table class='insert'>
+        <tr>
+          <td>ブランド</td>
+          <td>追加</td>
+        </tr>
+        <tr>
+          <form action="" method="post" onSubmit="return insert()">
+            <th><input type="text" name="brand_name" value="<?php echo $brand_name; ?>" required></th>
+            <th><input type="submit" value="追加" name="submit"></th>
+          </form>
+        </tr>
+      </table>
+      <!-- エラーの際に表示 -->
+      <?php if (isset($error)) : ?>
+        <div class="error">
+          <p><?php echo $error; ?></p>
+        </div>
+      <?php endif; ?>
+      <!-- エラーの際に表示 -->
+    <?php endif; ?>
+  <?php endif; ?>
   <table class='list'>
     <tr>
       <th>ブランド</th>
-      <th class="<?php echo $table_class ?>">削除</th>
+      <?php if (isset($_SESSION['user_id'])) : ?>
+        <?php if ($_SESSION['role'] == 0) : ?>
+          <th>削除</th>
+        <?php endif; ?>
+      <?php endif; ?>
     </tr>
     <?php foreach ($params['brand'] as $brand) : ?>
       <tr>
         <td><a href="brand_list.php?brand_id=<?= $brand['brand_id'] ?>"><?= $brand['brand_name'] ?></a></td>
         <!-- 管理者のみ表示 -->
-        <td class="<?php echo $table_class ?>">
-          <form action="" method="post" onSubmit="return deleted()">
-            <input type="hidden" name="brand_id" value="<?= $brand['brand_id'] ?>" required>
-            <input type="submit" value="削除" name="submit">
-          </form>
-        </td>
+        <?php if (isset($_SESSION['user_id'])) : ?>
+          <?php if ($_SESSION['role'] == 0) : ?>
+            <td>
+              <form action="" method="post" onSubmit="return deleted()">
+                <input type="hidden" name="brand_id" value="<?= $brand['brand_id'] ?>" required>
+                <input type="submit" value="削除" name="submit">
+              </form>
+            </td>
+          <?php endif; ?>
+        <?php endif; ?>
       </tr>
     <?php endforeach; ?>
   </table>
