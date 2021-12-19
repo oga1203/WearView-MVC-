@@ -17,25 +17,35 @@ class Brand extends Db
 	 */
 	public function findAll(): array
 	{
-		$sql = 'SELECT * FROM ' . $this->table;
-		$sth = $this->dbh->prepare($sql);
-		$sth->execute();
-		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
-		return $result;
+		try {
+			$sql = 'SELECT * FROM ' . $this->table;
+			$sth = $this->dbh->prepare($sql);
+			$sth->execute();
+			$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $result;
+		} catch (PDOException $e) {
+			echo "sqlエラー:" . $e->getMessage();
+			exit();
+		}
 	}
 	/**
-	 * テーブルへ登録
+	 * テーブルへ登録確認
 	 * 
 	 */
 	public function checkBrand($arr = ['brand_name' => ""])
 	{
-		$sql = 'SELECT * FROM ' . $this->table;
-		$sql .= ' WHERE brand_name = :brand_name';
-		$sth = $this->dbh->prepare($sql);
-		$sth->bindParam(':brand_name', $arr['brand_name'], PDO::PARAM_STR);
-		$sth->execute();
-		$result = $sth->fetch(PDO::FETCH_ASSOC);
-		return $result;
+		try {
+			$sql = 'SELECT * FROM ' . $this->table;
+			$sql .= ' WHERE brand_name = :brand_name';
+			$sth = $this->dbh->prepare($sql);
+			$sth->bindParam(':brand_name', $arr['brand_name'], PDO::PARAM_STR);
+			$sth->execute();
+			$result = $sth->fetch(PDO::FETCH_ASSOC);
+			return $result;
+		} catch (PDOException $e) {
+			echo "sqlエラー:" . $e->getMessage();
+			exit();
+		}
 	}
 
 	/**
@@ -44,10 +54,18 @@ class Brand extends Db
 	 */
 	public function insert($arr = ['brand_name' => ""])
 	{
-		$sql = 'INSERT INTO ' . $this->table . '(brand_name) VALUES (:brand_name)';
-		$sth = $this->dbh->prepare($sql);
-		$sth->bindParam(':brand_name', $arr['brand_name'], PDO::PARAM_STR);
-		$sth->execute();
+		$this->dbh->beginTransaction();
+		try {
+			$sql = 'INSERT INTO ' . $this->table . '(brand_name) VALUES (:brand_name)';
+			$sth = $this->dbh->prepare($sql);
+			$sth->bindParam(':brand_name', $arr['brand_name'], PDO::PARAM_STR);
+			$sth->execute();
+			$this->dbh->commit();
+		} catch (PDOException $e) {
+			$this->dbh->rollBack();
+			echo "sqlエラー:" . $e->getMessage();
+			exit();
+		}
 	}
 
 	/**
@@ -56,9 +74,17 @@ class Brand extends Db
 	 */
 	public function deleted($arr = ['brand_id' => ""])
 	{
-		$sql = 'DELETE FROM ' . $this->table . ' WHERE brand_id = :id';
-		$sth = $this->dbh->prepare($sql);
-		$sth->bindParam(':id', $arr['brand_id'], PDO::PARAM_STR);
-		$sth->execute();
+		$this->dbh->beginTransaction();
+		try {
+			$sql = 'DELETE FROM ' . $this->table . ' WHERE brand_id = :id';
+			$sth = $this->dbh->prepare($sql);
+			$sth->bindParam(':id', $arr['brand_id'], PDO::PARAM_STR);
+			$sth->execute();
+			$this->dbh->commit();
+		} catch (PDOException $e) {
+			$this->dbh->rollBack();
+			echo "sqlエラー:" . $e->getMessage();
+			exit();
+		}
 	}
 }
