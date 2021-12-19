@@ -9,14 +9,16 @@ require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
 $params = $users->viewUser();
 $user = $params['user'];
-$sex = $user['sex'];
 
 //追加
 if (isset($_POST['user_id'])) {
-	//バリデーション機能がないので追加予定
-	$update = $users->updateUser();
-	//ページのリフレッシュ
-	header("Location: mypage.php?user_id={$user['user_id']}");
+	$check = $users->checkUpdateUser();
+	if ($check === true) {
+		//バリデーション機能がないので追加予定
+		$update = $users->updateUser();
+		//ページのリフレッシュ
+		header("Location: mypage.php?user_id={$user['user_id']}");
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -46,10 +48,20 @@ if (isset($_POST['user_id'])) {
 				<p>メールアドレス</p>
 				<input type="text" name="email" value="<?= $user['email']; ?>">
 			</div>
-			<div class="input">
+			<!-- エラーの際に表示 -->
+			<?php if (isset($check)) : ?>
+				<div class="error">
+					<p><?php echo $check; ?></p>
+				</div>
+			<?php endif; ?>
+			<!-- エラーの際に表示 -->
+			<!-- 一旦保留 -->
+			<!-- <div class="input">
 				<p>生年月日</p>
-				<input type="text" name="age" value="<?= $user['age']; ?>">
-			</div>
+				<input type="text" name="year" value="<?= $user['age']; ?>">
+				<input type="text" name="month" value="<?= $user['age']; ?>">
+				<input type="text" name="day" value="<?= $user['age']; ?>">
+			</div> -->
 			<div class="input">
 				<p>身長</p>
 				<input type="text" name="height" value="<?= $user['height']; ?>">
@@ -61,11 +73,19 @@ if (isset($_POST['user_id'])) {
 			<div class="input">
 				<p>性別</p>
 				<select name="sex">
-					<!-- 改善の余地あり -->
-					<option value="">性別を選択</option>
-					<option value="1">男</option>
-					<option value="2">女</option>
-					<option value="3">未選択</option>
+					<?php if ($user['sex'] == 1) : ?>
+						<option value="1">男</option>
+						<option value="2">女</option>
+						<option value="3">未選択</option>
+					<?php elseif ($user['sex'] == 2) : ?>
+						<option value="2">女</option>
+						<option value="1">男</option>
+						<option value="3">未選択</option>
+					<?php else : ?>
+						<option value="3">未選択</option>
+						<option value="1">男</option>
+						<option value="2">女</option>
+					<?php endif; ?>
 				</select>
 			</div>
 			<input type="submit" value="更  新" name="submit" class="submit">
