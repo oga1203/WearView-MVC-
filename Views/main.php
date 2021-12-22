@@ -57,106 +57,111 @@ if (isset($_SESSION['role'])) {
 
 <body>
 	<?php include("header.php"); ?>
-	<!-- 管理者のみ表示 -->
-	<div class="<?php echo $table_class ?>">
-		<table class="insert">
-			<tr>
-				<th>ブランド</th>
-				<th>カテゴリー</th>
-				<th>中カテゴリー</th>
-				<th>商品名</th>
-				<th>商品品番</th>
-				<th>商品説明</th>
-			</tr>
-			<tr>
-				<form action="" method="post" onSubmit="return insert()">
-					<td>
-						<label>
-							<select name="brand_id">
-								<option value="">ブランドを選択</option>
-								<?php foreach ($ba_params["brand"] as $brand) : ?>
-									<option value="<?= $brand["brand_id"] ?>">
-										<?= $brand["brand_name"] ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</label>
-					</td>
-					<td>
-						<label>
-							<select name="category_id">
-								<option value="">カテゴリーを選択</option>
-								<?php foreach ($ca_params["category"] as $category) : ?>
-									<option value="<?= $category["category_id"] ?>">
-										<?= $category["category_name"] ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</label>
-					</td>
-					<td>
-						<label>
-							<select name="category_mid_id">
-								<option value="">中カテゴリーを選択</option>
-								<?php foreach ($ca_m_params["category_mid"] as $category_mid) : ?>
-									<option value="<?= $category_mid["category_mid_id"] ?>">
-										<?= $category_mid["category_mid_name"] ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</label>
-					</td>
-					<td>
-						<input type="text" name="item_name" value="<?php if (isset($_POST["item_name"])) {
-																		echo $_POST["item_name"];
-																	} ?>" required>
-					</td>
-					<td>
-						<input type="text" name="item_number" value="<?php if (isset($_POST["item_number"])) {
-																			echo $_POST["item_number"];
-																		} ?>">
-					</td>
-					<td>
-						<input type="text" name="item_explanation" value="<?php if (isset($_POST["item_explanation"])) {
-																				echo $_POST["item_explanation"];
-																			} ?>">
-					</td>
-			</tr>
-			<tr>
-				<th colspan="6"><input type="submit" value="追加" name="submit"></th>
-				</form>
-			</tr>
-		</table>
-	</div>
-	<table class="list">
-		<tr>
-			<th>商品名</th>
-			<th>ブランド</th>
-			<th>詳細</th>
-			<!-- 不要かな？ -->
-			<!-- <th>カテゴリー</th>
-			<th>中カテゴリー</th> -->
+	<div class="main">
+		<?php include("sidebar.php"); ?>
+		<div class="inside">
 			<!-- 管理者のみ表示 -->
-			<th class="<?PHP echo $table_class; ?>">削除</th>
-		</tr>
-		<?php foreach ($params["item"] as $item) : ?>
-			<tr>
-				<td><?= $item["item_name"] ?></td>
-				<td><?= $item["brand_name"] ?></td>
-				<!-- 不要かな？ -->
-				<!-- <td><?= $item["category_name"] ?></td>
+			<div class="<?php echo $table_class ?>">
+				<table class="insert">
+					<tr>
+						<th>ブランド</th>
+						<th>カテゴリー</th>
+						<th>中カテゴリー</th>
+						<th>商品名</th>
+						<th>商品品番</th>
+						<th>商品説明</th>
+					</tr>
+					<tr>
+						<form action="" method="post" onSubmit="return insert()">
+							<td>
+								<label>
+									<select name="brand_id">
+										<option value="">ブランドを選択</option>
+										<?php foreach ($ba_params["brand"] as $brand) : ?>
+											<option value="<?= $brand["brand_id"] ?>">
+												<?= $brand["brand_name"] ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</label>
+							</td>
+							<td>
+								<label>
+									<select name="category_id">
+										<option value="">カテゴリーを選択</option>
+										<?php foreach ($ca_params["category"] as $category) : ?>
+											<option value="<?= $category["category_id"] ?>">
+												<?= $category["category_name"] ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</label>
+							</td>
+							<td>
+								<label>
+									<select name="category_mid_id">
+										<option value="">中カテゴリーを選択</option>
+										<?php foreach ($ca_m_params["category_mid"] as $category_mid) : ?>
+											<option value="<?= $category_mid["category_mid_id"] ?>">
+												<?= $category_mid["category_mid_name"] ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</label>
+							</td>
+							<td>
+								<input type="text" name="item_name" value="<?php if (isset($_POST["item_name"])) {
+																				echo $_POST["item_name"];
+																			} ?>" required>
+							</td>
+							<td>
+								<input type="text" name="item_number" value="<?php if (isset($_POST["item_number"])) {
+																					echo $_POST["item_number"];
+																				} ?>">
+							</td>
+							<td>
+								<input type="text" name="item_explanation" value="<?php if (isset($_POST["item_explanation"])) {
+																						echo $_POST["item_explanation"];
+																					} ?>">
+							</td>
+					</tr>
+					<tr>
+						<th colspan="6"><input type="submit" value="追加" name="submit"></th>
+						</form>
+					</tr>
+				</table>
+			</div>
+			<table class="list">
+				<tr>
+					<th>商品名</th>
+					<th>ブランド</th>
+					<th>詳細</th>
+					<!-- 不要かな？ -->
+					<!-- <th>カテゴリー</th>
+			<th>中カテゴリー</th> -->
+					<!-- 管理者のみ表示 -->
+					<th class="<?PHP echo $table_class; ?>">削除</th>
+				</tr>
+				<?php foreach ($params["item"] as $item) : ?>
+					<tr>
+						<td><?= $item["item_name"] ?></td>
+						<td><?= $item["brand_name"] ?></td>
+						<!-- 不要かな？ -->
+						<!-- <td><?= $item["category_name"] ?></td>
 				<td><?= $item["category_mid_name"] ?></td> -->
-				<td><a href="item.php?item_id=<?= $item['item_id'] ?>">詳細</a></td>
-				<!-- 管理者のみ表示 -->
-				<td class="<?php echo $table_class ?>">
-					<form action="" method="post" onSubmit="return deleted()">
-						<input type="hidden" name="item_id" value="<?= $item["item_id"] ?>" required>
-						<input type="submit" value="削除" name="submit">
-					</form>
-				</td>
-			</tr>
-		<?php endforeach; ?>
-	</table>
+						<td><a href="item.php?item_id=<?= $item['item_id'] ?>">詳細</a></td>
+						<!-- 管理者のみ表示 -->
+						<td class="<?php echo $table_class ?>">
+							<form action="" method="post" onSubmit="return deleted()">
+								<input type="hidden" name="item_id" value="<?= $item["item_id"] ?>" required>
+								<input type="submit" value="削除" name="submit">
+							</form>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+	</div>
 	<?php include("footer.php"); ?>
 </body>
 

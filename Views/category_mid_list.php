@@ -3,6 +3,9 @@ session_start();
 require_once(ROOT_PATH . 'Controllers/ItemController.php');
 $items = new ItemController();
 $params = $items->viewCategoryMidList();
+require_once(ROOT_PATH . 'Controllers/CategoryMidController.php');
+$categories_mid = new CategoryMidController();
+$category_mid_name = $categories_mid->findById();
 //削除
 if (isset($_POST['item_id'])) {
   $deleted = $items->deleted();
@@ -27,40 +30,51 @@ if (isset($_POST['item_id'])) {
 
 <body>
   <?php include("header.php"); ?>
-  <table class='list'>
-    <tr>
-      <th>商品名</th>
-      <th>ブランド</th>
-      <!-- 不要かな？ -->
-      <!-- <th>カテゴリー</th>
+  <div class="main">
+    <?php include("sidebar.php"); ?>
+    <div class="inside">
+      <?php if ($params['item']) : ?>
+        <table class='list'>
+          <tr>
+            <th>商品名</th>
+            <th>ブランド</th>
+            <!-- 不要かな？ -->
+            <!-- <th>カテゴリー</th>
       <th>中カテゴリー</th> -->
-      <?php if (isset($_SESSION['user_id'])) : ?>
-        <?php if ($_SESSION['role'] == 0) : ?>
-          <th>削除</th>
-        <?php endif; ?>
-      <?php endif; ?>
-    </tr>
-    <?php foreach ($params['item'] as $item) : ?>
-      <tr>
-        <td><a href="item.php?item_id=<?= $item['item_id'] ?>"><?= $item["item_name"] ?></a></td>
-        <td><?= $item["brand_name"] ?></td>
-        <!-- 不要かな？ -->
-        <!-- <td><?= $item["category_name"] ?></td>
+            <?php if (isset($_SESSION['user_id'])) : ?>
+              <?php if ($_SESSION['role'] == 0) : ?>
+                <th>削除</th>
+              <?php endif; ?>
+            <?php endif; ?>
+          </tr>
+          <?php foreach ($params['item'] as $item) : ?>
+            <tr>
+              <td><a href="item.php?item_id=<?= $item['item_id'] ?>"><?= $item["item_name"] ?></a></td>
+              <td><?= $item["brand_name"] ?></td>
+              <!-- 不要かな？ -->
+              <!-- <td><?= $item["category_name"] ?></td>
         <td><?= $item["category_mid_name"] ?></td> -->
-        <!-- 管理者のみ表示 -->
-        <?php if (isset($_SESSION['user_id'])) : ?>
-          <?php if ($_SESSION['role'] == 0) : ?>
-            <td>
-              <form action="" method="post" onSubmit="return deleted()">
-                <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>">
-                <input type="submit" value="削除" name="submit">
-              </form>
-            </td>
-          <?php endif; ?>
-        <?php endif; ?>
-      </tr>
-    <?php endforeach; ?>
-  </table>
+              <!-- 管理者のみ表示 -->
+              <?php if (isset($_SESSION['user_id'])) : ?>
+                <?php if ($_SESSION['role'] == 0) : ?>
+                  <td>
+                    <form action="" method="post" onSubmit="return deleted()">
+                      <input type="hidden" name="item_id" value="<?= $item['item_id'] ?>">
+                      <input type="submit" value="削除" name="submit">
+                    </form>
+                  </td>
+                <?php endif; ?>
+              <?php endif; ?>
+            </tr>
+          <?php endforeach; ?>
+        </table>
+      <?php else : ?>
+        <div class="no_category_mid_list">
+          <p>「<?= $category_mid_name['category_mid_name'] ?>」カテゴリーの商品は登録されていません。</p>
+        </div>
+      <?php endif; ?>
+    </div>
+  </div>
   <?php include("footer.php"); ?>
 </body>
 

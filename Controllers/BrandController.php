@@ -23,6 +23,13 @@ class BrandController
         return $params;
     }
 
+    public function findById()
+    {
+        $brand_id = $this->request['get']['brand_id'];
+        $brand_name = $this->Brand->findById($brand_id);
+        return $brand_name;
+    }
+
     public function check()
     {
         if (isset($this->request['post']['brand_name'])) {

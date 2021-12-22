@@ -42,7 +42,7 @@ class UserController
         if (empty($email)) {
             $error_email = "メールアドレスは必須入力です。<br>正しくご入力ください。";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error_email = "メールアドレスは正しくご入力ください。";
+            $error_email = "メールアドレスは<br>正しくご入力ください。";
         } else {
             $error_email = null;
         }
@@ -148,16 +148,45 @@ class UserController
     public function checkUpdateUser()
     {
         $email = $this->request['post']['email'];
+        $height = $this->request['post']['height'];
+        $weight = $this->request['post']['weight'];
         // メールアドレスのチェック
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = "メールアドレスは正しくご入力ください。";
+            $error_email = "メールアドレスは<br>正しくご入力ください。";
         } else {
-            $error = null;
+            $error_email = null;
         }
-        if (empty($error)) {
-            return true;
+        if (!empty($height)) {
+            if (!preg_match('/^[0-9]+$/', $height)) {
+                $error_height = "数字を入力してください。";
+            } elseif (!preg_match('/^([0-9]{1,3})$/', $height)) {
+                $error_height = "3桁以内で入力してください。";
+            } else {
+                $error_height = null;
+            }
         } else {
-            return $error;
+            $error_height = null;
+        }
+        if (!empty($weight)) {
+            if (!preg_match('/^[0-9]+$/', $weight)) {
+                $error_weight = "数字を入力してください。";
+            } elseif (!preg_match('/^([0-9]{1,3})$/', $weight)) {
+                $error_weight = "3桁以内で入力してください。";
+            } else {
+                $error_weight = null;
+            }
+        } else {
+            $error_weight = null;
+        }
+        if (isset($error_email) || isset($error_height) || isset($error_weight)) {
+            $errors = [
+                'email' => $error_email,
+                'height' => $error_height,
+                'weight' => $error_weight,
+            ];
+            return $errors;
+        } else {
+            return true;
         }
     }
 

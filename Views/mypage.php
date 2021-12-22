@@ -44,7 +44,13 @@ if (isset($_POST['favorite_id'])) {
   <table>
     <tr>
       <th>ユーザー名</th>
-      <td><?= $user['user_name']; ?></td>
+      <td>
+        <?php if (isset($user['user_name'])) : ?>
+          <?= $user['user_name']; ?>
+        <?php else : ?>
+          <p>登録されていません。</p>
+        <?php endif; ?>
+      </td>
     </tr>
     <tr>
       <th>メールアドレス</th>

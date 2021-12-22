@@ -9,7 +9,6 @@ require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
 $params = $users->viewUser();
 $user = $params['user'];
-
 //追加
 if (isset($_POST['user_id'])) {
 	$check = $users->checkUpdateUser();
@@ -42,16 +41,24 @@ if (isset($_POST['user_id'])) {
 			<input type="hidden" name="user_id" value="<?= $user['user_id']; ?>">
 			<div class="input">
 				<p>ユーザー名</p>
-				<input type="text" name="user_name" value="<?= $user['user_name']; ?>">
+				<?php if (isset($_POST['user_name'])) : ?>
+					<input type="text" name="user_name" value="<?= $_POST['user_name']; ?>">
+				<?php else : ?>
+					<input type="text" name="user_name" value="<?= $user['user_name']; ?>">
+				<?php endif; ?>
 			</div>
 			<div class="input">
 				<p>メールアドレス</p>
-				<input type="text" name="email" value="<?= $user['email']; ?>">
+				<?php if (isset($_POST['email'])) : ?>
+					<input type="text" name="email" value="<?= $_POST['email']; ?>">
+				<?php else : ?>
+					<input type="text" name="email" value="<?= $user['email']; ?>">
+				<?php endif; ?>
 			</div>
 			<!-- エラーの際に表示 -->
-			<?php if (isset($check)) : ?>
+			<?php if (isset($check['email'])) : ?>
 				<div class="error">
-					<p><?php echo $check; ?></p>
+					<p><?php echo $check['email']; ?></p>
 				</div>
 			<?php endif; ?>
 			<!-- エラーの際に表示 -->
@@ -64,27 +71,63 @@ if (isset($_POST['user_id'])) {
 			</div> -->
 			<div class="input">
 				<p>身長</p>
-				<input type="text" name="height" value="<?= $user['height']; ?>">
+				<?php if (isset($_POST['height'])) : ?>
+					<input type="text" name="height" value="<?= $_POST['height']; ?>">
+				<?php else : ?>
+					<input type="text" name="height" value="<?= $user['height']; ?>">
+				<?php endif; ?>
 			</div>
+			<!-- エラーの際に表示 -->
+			<?php if (isset($check['height'])) : ?>
+				<div class="error">
+					<p><?php echo $check['height']; ?></p>
+				</div>
+			<?php endif; ?>
 			<div class="input">
 				<p>体重</p>
-				<input type="text" name="weight" value="<?= $user['weight']; ?>">
+				<?php if (isset($_POST['weight'])) : ?>
+					<input type="text" name="weight" value="<?= $_POST['weight']; ?>">
+				<?php else : ?>
+					<input type="text" name="weight" value="<?= $user['weight']; ?>">
+				<?php endif; ?>
 			</div>
+			<!-- エラーの際に表示 -->
+			<?php if (isset($check['weight'])) : ?>
+				<div class="error">
+					<p><?php echo $check['weight']; ?></p>
+				</div>
+			<?php endif; ?>
 			<div class="input">
 				<p>性別</p>
 				<select name="sex">
-					<?php if ($user['sex'] == 1) : ?>
-						<option value="1">男</option>
-						<option value="2">女</option>
-						<option value="3">未選択</option>
-					<?php elseif ($user['sex'] == 2) : ?>
-						<option value="2">女</option>
-						<option value="1">男</option>
-						<option value="3">未選択</option>
+					<?php if (isset($_POST['weight'])) : ?>
+						<?php if ($_POST['sex'] == 1) : ?>
+							<option value="1">男</option>
+							<option value="2">女</option>
+							<option value="3">未選択</option>
+						<?php elseif ($_POST['sex'] == 2) : ?>
+							<option value="2">女</option>
+							<option value="1">男</option>
+							<option value="3">未選択</option>
+						<?php else : ?>
+							<option value="3">未選択</option>
+							<option value="1">男</option>
+							<option value="2">女</option>
+						<?php endif; ?>
 					<?php else : ?>
-						<option value="3">未選択</option>
-						<option value="1">男</option>
-						<option value="2">女</option>
+						<?php if ($user['sex'] == 1) : ?>
+							<option value="1">男</option>
+							<option value="2">女</option>
+							<option value="3">未選択</option>
+						<?php elseif ($user['sex'] == 2) : ?>
+							<option value="2">女</option>
+							<option value="1">男</option>
+							<option value="3">未選択</option>
+						<?php else : ?>
+							<option value="3">未選択</option>
+							<option value="1">男</option>
+							<option value="2">女</option>
+						<?php endif; ?>
 					<?php endif; ?>
 				</select>
 			</div>

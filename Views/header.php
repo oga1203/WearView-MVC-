@@ -18,12 +18,18 @@
 					<a href="manager_list.php" class="">管理者一覧</a>
 				<?php endif; ?>
 			<?php endif; ?>
-			<a href="category.php">カテゴリー検索</a>
+			<!-- 不要？検討中 -->
+			<!-- <a href="category.php">カテゴリー検索</a> -->
 			<!-- 不要？検討中 -->
 			<!-- <a href="category_mid.php">中カテゴリー一覧</a> -->
-			<a href="brand.php">ブランド検索</a>
-			<a href="search.php">検索</a>
+			<?php if (isset($_SESSION['user_id'])) : ?>
+				<!-- 管理者がログイン状態で表示 -->
+				<?php if ($_SESSION['role'] == 0) : ?>
+					<a href="brand.php">ブランド検索</a>
+				<?php endif; ?>
+			<?php endif; ?>
 			<!-- 不要？検討中 -->
+			<a href="search.php">検索</a>
 			<!-- ログインまたはログアウト判定 -->
 			<?php if (isset($_SESSION['user_id'])) : ?>
 				<a href="mypage.php?user_id=<?= $_SESSION['user_id'] ?>" class="">マイページ</a>

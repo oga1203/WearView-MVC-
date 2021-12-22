@@ -23,6 +23,14 @@ class CategoryMidController
         return $params;
     }
 
+    public function findById()
+    {
+
+        $category_mid_id = $this->request['get']['category_mid_id'];
+        $category_mid_name = $this->CategoryMid->findById($category_mid_id);
+        return $category_mid_name;
+    }
+
     public function insert()
     {
         $category_mid = [

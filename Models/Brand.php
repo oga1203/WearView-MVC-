@@ -28,6 +28,27 @@ class Brand extends Db
 			exit();
 		}
 	}
+
+	/**
+	 * テーブルへ登録確認
+	 * 
+	 */
+	public function findById($brand_id)
+	{
+		try {
+			$sql = 'SELECT brand_name FROM ' . $this->table;
+			$sql .= ' WHERE brand_id = :brand_id';
+			$sth = $this->dbh->prepare($sql);
+			$sth->bindParam(':brand_id', $brand_id, PDO::PARAM_STR);
+			$sth->execute();
+			$result = $sth->fetch(PDO::FETCH_ASSOC);
+			return $result;
+		} catch (PDOException $e) {
+			echo "sqlエラー:" . $e->getMessage();
+			exit();
+		}
+	}
+
 	/**
 	 * テーブルへ登録確認
 	 * 

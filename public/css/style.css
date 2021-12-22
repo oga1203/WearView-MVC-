@@ -151,12 +151,50 @@ input{
 }
 /* ---------- post-------------------------------*/
 /* ---------- main-------------------------------*/
+.main{
+    display: flex;
+}
+
+.inside{
+    width: 85%;
+    line-height: 3;
+}
+
+.sidebar{
+    position: -webkit-sticky;
+    position: sticky;
+    /* top: 0; */
+    width: 15%;
+	font-size: 15px;
+    /* height: 400px; */
+    padding: 10px;
+    /* margin: 0; */
+    /* line-height: 3; */
+    background: #EEEEEE;
+}
 /* ---------- mypage-----------------------------*/
-/* ---------- brand------------------------------*/
+/* ---------- brand_list ------------------------------*/
+.no_brand_list{
+	height: 600px;
+}
+.no_brand_list p{
+	text-align: center;
+	margin-top: 50px;
+	font-size: 30px;
+}
+/* ---------- category_mid_list ------------------------------*/
+.no_category_mid_list{
+	height: 600px;
+}
+.no_category_mid_list p{
+	text-align: center;
+	margin-top: 50px;
+	font-size: 30px;
+}
+/* ----------------------------------------*/
 
 .insert table{
 	border-color  : black;
-	/* background-color : black; */
 }
 .insert table th{
 	padding : 10px;

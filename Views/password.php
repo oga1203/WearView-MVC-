@@ -1,8 +1,6 @@
 <?php
 require_once(ROOT_PATH . 'Controllers/UserController.php');
 $users = new UserController();
-$email = null;
-$password = null;
 // バリデーションチェック
 $error = $users->validationUser();
 if ($error === true) {
@@ -10,8 +8,6 @@ if ($error === true) {
 	$error = [];
 	// メールアドレスチェック
 	if (empty($check)) {
-		$email = $_POST['email'];
-		$password = $_POST['password'];;
 		$error['email'] = 'メールアドレスが登録されていません。';
 	} else {
 		$params = $users->updatePassword();
@@ -20,17 +16,6 @@ if ($error === true) {
 		location.href = 'login.php';
 		</script>";
 		echo $comp_alert;
-	}
-} else {
-	if (isset($_POST['email'])) {
-		$email = $_POST['email'];
-	} else {
-		$email = null;
-	}
-	if (isset($_POST['password'])) {
-		$password = $_POST['password'];
-	} else {
-		$password = null;
 	}
 }
 
@@ -54,25 +39,33 @@ if ($error === true) {
 		<form action="" method="post">
 			<div class="input">
 				<p>登録済みのメールアドレス</p>
-				<input type="text" name="email" placeholder="sample@sample.com" value="<?php echo $email ?>">
+				<?php if (isset($_POST['email'])) : ?>
+					<input type="text" name="email" placeholder="sample@sample.com" value="<?= $_POST['email']; ?>">
+				<?php else : ?>
+					<input type="text" name="email" placeholder="sample@sample.com" value="">
+				<?php endif; ?>
 			</div>
 			<!-- エラーの際に表示 -->
-			<?php if (isset($error['email'])) { ?>
+			<?php if (isset($error['email'])) : ?>
 				<div class="error">
 					<p><?php echo $error['email']; ?></p>
 				</div>
-			<?php } ?>
+			<?php endif; ?>
 			<!-- エラーの際に表示 -->
 			<div class="input">
 				<p>新しいパスワード</p>
-				<input type="password" name="password" placeholder="New Password" value="<?php echo $password ?>">
+				<?php if (isset($_POST['password'])) : ?>
+					<input type="password" name="password" placeholder="New Password" value="<?= $_POST['password']; ?>">
+				<?php else : ?>
+					<input type="password" name="password" placeholder="New Password" value="">
+				<?php endif; ?>
 			</div>
 			<!-- エラーの際に表示 -->
-			<?php if (isset($error['password'])) { ?>
+			<?php if (isset($error['password'])) : ?>
 				<div class="error">
 					<p><?php echo $error['password']; ?></p>
 				</div>
-			<?php } ?>
+			<?php endif; ?>
 			<!-- エラーの際に表示 -->
 			<div class="sub">
 				<input type="submit" name="login" value="変更" class="submit" id="login">
